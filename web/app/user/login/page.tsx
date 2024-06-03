@@ -26,38 +26,41 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Logging In</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700">Mail</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          <FancyButton type="submit" className="">Log In</FancyButton>
-        </form>
-      </div>
-    </div>
+    <><h2 className="text-2xl font-bold mb-6 text-center">
+          Logging In
+      </h2><form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                  <label htmlFor="email" className="block text-gray-700">
+                      Mail
+                  </label>
+                  <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded"
+                      required />
+              </div>
+              <div className="mb-4">
+                  <label htmlFor="password" className="block text-gray-700">
+                      Password
+                  </label>
+                  <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded"
+                      required />
+              </div>
+              <div className="flex flex-row w-full items-center justify-center">
+                    <FancyButton type="submit" className="">
+                        Log In
+                    </FancyButton>
+              </div>
+          </form></>
   );
 };
 
