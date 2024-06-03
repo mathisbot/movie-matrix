@@ -6,7 +6,7 @@ service UserService {
   rpc SignUp(SignUpRequest) returns (SignUpResponse);
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
-  rpc CheckSession(CheckSessionRequest) returns (CheckSessionResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
 }
 
 message SignUpRequest {
@@ -33,12 +33,10 @@ message LogoutRequest {
 
 message LogoutResponse {}
 
-message CheckSessionRequest {
+message GetUserRequest {
   string sessionToken = 1;
 }
 
-message CheckSessionResponse {
-  bool success = 1;
-  string message = 2;
-  string username = 3;
+message GetUserResponse {
+  string username = 1;
 }

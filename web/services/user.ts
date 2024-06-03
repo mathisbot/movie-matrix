@@ -43,15 +43,14 @@ export interface LogoutRequest {
   sessionToken: string;
 }
 
-export interface LogoutResponse {}
+export interface LogoutResponse {
+}
 
-export interface CheckSessionRequest {
+export interface GetUserRequest {
   sessionToken: string;
 }
 
-export interface CheckSessionResponse {
-  success: boolean;
-  message: string;
+export interface GetUserResponse {
   username: string;
 }
 
@@ -60,10 +59,7 @@ function createBaseSignUpRequest(): SignUpRequest {
 }
 
 export const SignUpRequest = {
-  encode(
-    message: SignUpRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: SignUpRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.username !== "") {
       writer.uint32(10).string(message.username);
     }
@@ -74,8 +70,7 @@ export const SignUpRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignUpRequest {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignUpRequest();
     while (reader.pos < end) {
@@ -106,12 +101,8 @@ export const SignUpRequest = {
 
   fromJSON(object: any): SignUpRequest {
     return {
-      username: isSet(object.username)
-        ? globalThis.String(object.username)
-        : "",
-      password: isSet(object.password)
-        ? globalThis.String(object.password)
-        : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      password: isSet(object.password) ? globalThis.String(object.password) : "",
     };
   },
 
@@ -126,14 +117,10 @@ export const SignUpRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SignUpRequest>, I>>(
-    base?: I
-  ): SignUpRequest {
+  create<I extends Exact<DeepPartial<SignUpRequest>, I>>(base?: I): SignUpRequest {
     return SignUpRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<SignUpRequest>, I>>(
-    object: I
-  ): SignUpRequest {
+  fromPartial<I extends Exact<DeepPartial<SignUpRequest>, I>>(object: I): SignUpRequest {
     const message = createBaseSignUpRequest();
     message.username = object.username ?? "";
     message.password = object.password ?? "";
@@ -146,10 +133,7 @@ function createBaseSignUpResponse(): SignUpResponse {
 }
 
 export const SignUpResponse = {
-  encode(
-    message: SignUpResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: SignUpResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sessionToken !== "") {
       writer.uint32(10).string(message.sessionToken);
     }
@@ -157,8 +141,7 @@ export const SignUpResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SignUpResponse {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSignUpResponse();
     while (reader.pos < end) {
@@ -181,11 +164,7 @@ export const SignUpResponse = {
   },
 
   fromJSON(object: any): SignUpResponse {
-    return {
-      sessionToken: isSet(object.sessionToken)
-        ? globalThis.String(object.sessionToken)
-        : "",
-    };
+    return { sessionToken: isSet(object.sessionToken) ? globalThis.String(object.sessionToken) : "" };
   },
 
   toJSON(message: SignUpResponse): unknown {
@@ -196,14 +175,10 @@ export const SignUpResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<SignUpResponse>, I>>(
-    base?: I
-  ): SignUpResponse {
+  create<I extends Exact<DeepPartial<SignUpResponse>, I>>(base?: I): SignUpResponse {
     return SignUpResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<SignUpResponse>, I>>(
-    object: I
-  ): SignUpResponse {
+  fromPartial<I extends Exact<DeepPartial<SignUpResponse>, I>>(object: I): SignUpResponse {
     const message = createBaseSignUpResponse();
     message.sessionToken = object.sessionToken ?? "";
     return message;
@@ -215,10 +190,7 @@ function createBaseLoginRequest(): LoginRequest {
 }
 
 export const LoginRequest = {
-  encode(
-    message: LoginRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: LoginRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.username !== "") {
       writer.uint32(10).string(message.username);
     }
@@ -229,8 +201,7 @@ export const LoginRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LoginRequest {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLoginRequest();
     while (reader.pos < end) {
@@ -261,12 +232,8 @@ export const LoginRequest = {
 
   fromJSON(object: any): LoginRequest {
     return {
-      username: isSet(object.username)
-        ? globalThis.String(object.username)
-        : "",
-      password: isSet(object.password)
-        ? globalThis.String(object.password)
-        : "",
+      username: isSet(object.username) ? globalThis.String(object.username) : "",
+      password: isSet(object.password) ? globalThis.String(object.password) : "",
     };
   },
 
@@ -281,14 +248,10 @@ export const LoginRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LoginRequest>, I>>(
-    base?: I
-  ): LoginRequest {
+  create<I extends Exact<DeepPartial<LoginRequest>, I>>(base?: I): LoginRequest {
     return LoginRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<LoginRequest>, I>>(
-    object: I
-  ): LoginRequest {
+  fromPartial<I extends Exact<DeepPartial<LoginRequest>, I>>(object: I): LoginRequest {
     const message = createBaseLoginRequest();
     message.username = object.username ?? "";
     message.password = object.password ?? "";
@@ -301,10 +264,7 @@ function createBaseLoginResponse(): LoginResponse {
 }
 
 export const LoginResponse = {
-  encode(
-    message: LoginResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: LoginResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sessionToken !== "") {
       writer.uint32(10).string(message.sessionToken);
     }
@@ -312,8 +272,7 @@ export const LoginResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LoginResponse {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLoginResponse();
     while (reader.pos < end) {
@@ -336,11 +295,7 @@ export const LoginResponse = {
   },
 
   fromJSON(object: any): LoginResponse {
-    return {
-      sessionToken: isSet(object.sessionToken)
-        ? globalThis.String(object.sessionToken)
-        : "",
-    };
+    return { sessionToken: isSet(object.sessionToken) ? globalThis.String(object.sessionToken) : "" };
   },
 
   toJSON(message: LoginResponse): unknown {
@@ -351,14 +306,10 @@ export const LoginResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LoginResponse>, I>>(
-    base?: I
-  ): LoginResponse {
+  create<I extends Exact<DeepPartial<LoginResponse>, I>>(base?: I): LoginResponse {
     return LoginResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<LoginResponse>, I>>(
-    object: I
-  ): LoginResponse {
+  fromPartial<I extends Exact<DeepPartial<LoginResponse>, I>>(object: I): LoginResponse {
     const message = createBaseLoginResponse();
     message.sessionToken = object.sessionToken ?? "";
     return message;
@@ -370,10 +321,7 @@ function createBaseLogoutRequest(): LogoutRequest {
 }
 
 export const LogoutRequest = {
-  encode(
-    message: LogoutRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(message: LogoutRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sessionToken !== "") {
       writer.uint32(10).string(message.sessionToken);
     }
@@ -381,8 +329,7 @@ export const LogoutRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LogoutRequest {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLogoutRequest();
     while (reader.pos < end) {
@@ -405,11 +352,7 @@ export const LogoutRequest = {
   },
 
   fromJSON(object: any): LogoutRequest {
-    return {
-      sessionToken: isSet(object.sessionToken)
-        ? globalThis.String(object.sessionToken)
-        : "",
-    };
+    return { sessionToken: isSet(object.sessionToken) ? globalThis.String(object.sessionToken) : "" };
   },
 
   toJSON(message: LogoutRequest): unknown {
@@ -420,14 +363,10 @@ export const LogoutRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LogoutRequest>, I>>(
-    base?: I
-  ): LogoutRequest {
+  create<I extends Exact<DeepPartial<LogoutRequest>, I>>(base?: I): LogoutRequest {
     return LogoutRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<LogoutRequest>, I>>(
-    object: I
-  ): LogoutRequest {
+  fromPartial<I extends Exact<DeepPartial<LogoutRequest>, I>>(object: I): LogoutRequest {
     const message = createBaseLogoutRequest();
     message.sessionToken = object.sessionToken ?? "";
     return message;
@@ -439,16 +378,12 @@ function createBaseLogoutResponse(): LogoutResponse {
 }
 
 export const LogoutResponse = {
-  encode(
-    _: LogoutResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+  encode(_: LogoutResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LogoutResponse {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLogoutResponse();
     while (reader.pos < end) {
@@ -472,39 +407,31 @@ export const LogoutResponse = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<LogoutResponse>, I>>(
-    base?: I
-  ): LogoutResponse {
+  create<I extends Exact<DeepPartial<LogoutResponse>, I>>(base?: I): LogoutResponse {
     return LogoutResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<LogoutResponse>, I>>(
-    _: I
-  ): LogoutResponse {
+  fromPartial<I extends Exact<DeepPartial<LogoutResponse>, I>>(_: I): LogoutResponse {
     const message = createBaseLogoutResponse();
     return message;
   },
 };
 
-function createBaseCheckSessionRequest(): CheckSessionRequest {
+function createBaseGetUserRequest(): GetUserRequest {
   return { sessionToken: "" };
 }
 
-export const CheckSessionRequest = {
-  encode(
-    message: CheckSessionRequest,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
+export const GetUserRequest = {
+  encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sessionToken !== "") {
       writer.uint32(10).string(message.sessionToken);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CheckSessionRequest {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCheckSessionRequest();
+    const message = createBaseGetUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -524,15 +451,11 @@ export const CheckSessionRequest = {
     return message;
   },
 
-  fromJSON(object: any): CheckSessionRequest {
-    return {
-      sessionToken: isSet(object.sessionToken)
-        ? globalThis.String(object.sessionToken)
-        : "",
-    };
+  fromJSON(object: any): GetUserRequest {
+    return { sessionToken: isSet(object.sessionToken) ? globalThis.String(object.sessionToken) : "" };
   },
 
-  toJSON(message: CheckSessionRequest): unknown {
+  toJSON(message: GetUserRequest): unknown {
     const obj: any = {};
     if (message.sessionToken !== "") {
       obj.sessionToken = message.sessionToken;
@@ -540,68 +463,37 @@ export const CheckSessionRequest = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CheckSessionRequest>, I>>(
-    base?: I
-  ): CheckSessionRequest {
-    return CheckSessionRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetUserRequest>, I>>(base?: I): GetUserRequest {
+    return GetUserRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CheckSessionRequest>, I>>(
-    object: I
-  ): CheckSessionRequest {
-    const message = createBaseCheckSessionRequest();
+  fromPartial<I extends Exact<DeepPartial<GetUserRequest>, I>>(object: I): GetUserRequest {
+    const message = createBaseGetUserRequest();
     message.sessionToken = object.sessionToken ?? "";
     return message;
   },
 };
 
-function createBaseCheckSessionResponse(): CheckSessionResponse {
-  return { success: false, message: "", username: "" };
+function createBaseGetUserResponse(): GetUserResponse {
+  return { username: "" };
 }
 
-export const CheckSessionResponse = {
-  encode(
-    message: CheckSessionResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.success !== false) {
-      writer.uint32(8).bool(message.success);
-    }
-    if (message.message !== "") {
-      writer.uint32(18).string(message.message);
-    }
+export const GetUserResponse = {
+  encode(message: GetUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.username !== "") {
-      writer.uint32(26).string(message.username);
+      writer.uint32(10).string(message.username);
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): CheckSessionResponse {
-    const reader =
-      input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCheckSessionResponse();
+    const message = createBaseGetUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 8) {
-            break;
-          }
-
-          message.success = reader.bool();
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.message = reader.string();
-          continue;
-        case 3:
-          if (tag !== 26) {
+          if (tag !== 10) {
             break;
           }
 
@@ -616,43 +508,23 @@ export const CheckSessionResponse = {
     return message;
   },
 
-  fromJSON(object: any): CheckSessionResponse {
-    return {
-      success: isSet(object.success)
-        ? globalThis.Boolean(object.success)
-        : false,
-      message: isSet(object.message) ? globalThis.String(object.message) : "",
-      username: isSet(object.username)
-        ? globalThis.String(object.username)
-        : "",
-    };
+  fromJSON(object: any): GetUserResponse {
+    return { username: isSet(object.username) ? globalThis.String(object.username) : "" };
   },
 
-  toJSON(message: CheckSessionResponse): unknown {
+  toJSON(message: GetUserResponse): unknown {
     const obj: any = {};
-    if (message.success !== false) {
-      obj.success = message.success;
-    }
-    if (message.message !== "") {
-      obj.message = message.message;
-    }
     if (message.username !== "") {
       obj.username = message.username;
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CheckSessionResponse>, I>>(
-    base?: I
-  ): CheckSessionResponse {
-    return CheckSessionResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetUserResponse>, I>>(base?: I): GetUserResponse {
+    return GetUserResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CheckSessionResponse>, I>>(
-    object: I
-  ): CheckSessionResponse {
-    const message = createBaseCheckSessionResponse();
-    message.success = object.success ?? false;
-    message.message = object.message ?? "";
+  fromPartial<I extends Exact<DeepPartial<GetUserResponse>, I>>(object: I): GetUserResponse {
+    const message = createBaseGetUserResponse();
     message.username = object.username ?? "";
     return message;
   },
@@ -664,45 +536,37 @@ export const UserServiceService = {
     path: "/user.UserService/SignUp",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: SignUpRequest) =>
-      Buffer.from(SignUpRequest.encode(value).finish()),
+    requestSerialize: (value: SignUpRequest) => Buffer.from(SignUpRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) => SignUpRequest.decode(value),
-    responseSerialize: (value: SignUpResponse) =>
-      Buffer.from(SignUpResponse.encode(value).finish()),
+    responseSerialize: (value: SignUpResponse) => Buffer.from(SignUpResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => SignUpResponse.decode(value),
   },
   login: {
     path: "/user.UserService/Login",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: LoginRequest) =>
-      Buffer.from(LoginRequest.encode(value).finish()),
+    requestSerialize: (value: LoginRequest) => Buffer.from(LoginRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) => LoginRequest.decode(value),
-    responseSerialize: (value: LoginResponse) =>
-      Buffer.from(LoginResponse.encode(value).finish()),
+    responseSerialize: (value: LoginResponse) => Buffer.from(LoginResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => LoginResponse.decode(value),
   },
   logout: {
     path: "/user.UserService/Logout",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: LogoutRequest) =>
-      Buffer.from(LogoutRequest.encode(value).finish()),
+    requestSerialize: (value: LogoutRequest) => Buffer.from(LogoutRequest.encode(value).finish()),
     requestDeserialize: (value: Buffer) => LogoutRequest.decode(value),
-    responseSerialize: (value: LogoutResponse) =>
-      Buffer.from(LogoutResponse.encode(value).finish()),
+    responseSerialize: (value: LogoutResponse) => Buffer.from(LogoutResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => LogoutResponse.decode(value),
   },
-  checkSession: {
-    path: "/user.UserService/CheckSession",
+  getUser: {
+    path: "/user.UserService/GetUser",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: CheckSessionRequest) =>
-      Buffer.from(CheckSessionRequest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => CheckSessionRequest.decode(value),
-    responseSerialize: (value: CheckSessionResponse) =>
-      Buffer.from(CheckSessionResponse.encode(value).finish()),
-    responseDeserialize: (value: Buffer) => CheckSessionResponse.decode(value),
+    requestSerialize: (value: GetUserRequest) => Buffer.from(GetUserRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetUserRequest.decode(value),
+    responseSerialize: (value: GetUserResponse) => Buffer.from(GetUserResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetUserResponse.decode(value),
   },
 } as const;
 
@@ -710,119 +574,89 @@ export interface UserServiceServer extends UntypedServiceImplementation {
   signUp: handleUnaryCall<SignUpRequest, SignUpResponse>;
   login: handleUnaryCall<LoginRequest, LoginResponse>;
   logout: handleUnaryCall<LogoutRequest, LogoutResponse>;
-  checkSession: handleUnaryCall<CheckSessionRequest, CheckSessionResponse>;
+  getUser: handleUnaryCall<GetUserRequest, GetUserResponse>;
 }
 
 export interface UserServiceClient extends Client {
   signUp(
     request: SignUpRequest,
-    callback: (error: ServiceError | null, response: SignUpResponse) => void
+    callback: (error: ServiceError | null, response: SignUpResponse) => void,
   ): ClientUnaryCall;
   signUp(
     request: SignUpRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: SignUpResponse) => void
+    callback: (error: ServiceError | null, response: SignUpResponse) => void,
   ): ClientUnaryCall;
   signUp(
     request: SignUpRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: SignUpResponse) => void
+    callback: (error: ServiceError | null, response: SignUpResponse) => void,
   ): ClientUnaryCall;
   login(
     request: LoginRequest,
-    callback: (error: ServiceError | null, response: LoginResponse) => void
+    callback: (error: ServiceError | null, response: LoginResponse) => void,
   ): ClientUnaryCall;
   login(
     request: LoginRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: LoginResponse) => void
+    callback: (error: ServiceError | null, response: LoginResponse) => void,
   ): ClientUnaryCall;
   login(
     request: LoginRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: LoginResponse) => void
+    callback: (error: ServiceError | null, response: LoginResponse) => void,
   ): ClientUnaryCall;
   logout(
     request: LogoutRequest,
-    callback: (error: ServiceError | null, response: LogoutResponse) => void
+    callback: (error: ServiceError | null, response: LogoutResponse) => void,
   ): ClientUnaryCall;
   logout(
     request: LogoutRequest,
     metadata: Metadata,
-    callback: (error: ServiceError | null, response: LogoutResponse) => void
+    callback: (error: ServiceError | null, response: LogoutResponse) => void,
   ): ClientUnaryCall;
   logout(
     request: LogoutRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (error: ServiceError | null, response: LogoutResponse) => void
+    callback: (error: ServiceError | null, response: LogoutResponse) => void,
   ): ClientUnaryCall;
-  checkSession(
-    request: CheckSessionRequest,
-    callback: (
-      error: ServiceError | null,
-      response: CheckSessionResponse
-    ) => void
+  getUser(
+    request: GetUserRequest,
+    callback: (error: ServiceError | null, response: GetUserResponse) => void,
   ): ClientUnaryCall;
-  checkSession(
-    request: CheckSessionRequest,
+  getUser(
+    request: GetUserRequest,
     metadata: Metadata,
-    callback: (
-      error: ServiceError | null,
-      response: CheckSessionResponse
-    ) => void
+    callback: (error: ServiceError | null, response: GetUserResponse) => void,
   ): ClientUnaryCall;
-  checkSession(
-    request: CheckSessionRequest,
+  getUser(
+    request: GetUserRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
-    callback: (
-      error: ServiceError | null,
-      response: CheckSessionResponse
-    ) => void
+    callback: (error: ServiceError | null, response: GetUserResponse) => void,
   ): ClientUnaryCall;
 }
 
-export const UserServiceClient = makeGenericClientConstructor(
-  UserServiceService,
-  "user.UserService"
-) as unknown as {
-  new (
-    address: string,
-    credentials: ChannelCredentials,
-    options?: Partial<ClientOptions>
-  ): UserServiceClient;
+export const UserServiceClient = makeGenericClientConstructor(UserServiceService, "user.UserService") as unknown as {
+  new (address: string, credentials: ChannelCredentials, options?: Partial<ClientOptions>): UserServiceClient;
   service: typeof UserServiceService;
   serviceName: string;
 };
 
-type Builtin =
-  | Date
-  | Function
-  | Uint8Array
-  | string
-  | number
-  | boolean
-  | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
-export type DeepPartial<T> = T extends Builtin
-  ? T
-  : T extends globalThis.Array<infer U>
-  ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U>
-  ? ReadonlyArray<DeepPartial<U>>
-  : T extends {}
-  ? { [K in keyof T]?: DeepPartial<T[K]> }
+export type DeepPartial<T> = T extends Builtin ? T
+  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin
-  ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
-      [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
-    };
+export type Exact<P, I extends P> = P extends Builtin ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

@@ -1,0 +1,5 @@
+application:
+  host: 127.0.0.1
+  jwt_secret: "a_secret_key"
+database:
+  require_ssl: false
