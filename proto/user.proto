@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+  rpc CheckSession(CheckSessionRequest) returns (CheckSessionResponse);
+}
+
+message SignUpRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message SignUpResponse {
+  string sessionToken = 1;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string sessionToken = 1;
+}
+
+message LogoutRequest {
+  string sessionToken = 1;
+}
+
+message LogoutResponse {}
+
+message CheckSessionRequest {
+  string sessionToken = 1;
+}
+
+message CheckSessionResponse {
+  bool success = 1;
+  string message = 2;
+  string username = 3;
+}
