@@ -1,0 +1,11 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "cargo watch -x run",
+    "build": "cargo build -r",
+    "start": "cargo run -r",
+    "lint": "cargo clippy -- -D warnings"
+  }
+}

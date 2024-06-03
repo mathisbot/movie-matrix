@@ -1,0 +1,13 @@
+{
+  "name": "movie-matrix",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A Netflix like web-app",
+  "scripts": {
+    "dev": "pnpm run --parallel dev",
+    "build": "pnpm run --parallel build",
+    "start": "pnpm run --parallel start",
+    "lint": "pnpm run --parallel lint",
+    "test": "pnpm run --parallel test"
+  }
+}
