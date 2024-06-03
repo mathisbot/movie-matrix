@@ -9,5 +9,8 @@
     "start": "pnpm run --parallel start",
     "lint": "pnpm run --parallel lint",
     "test": "pnpm run --parallel test"
+  },
+  "devDependencies": {
+    "ts-proto": "1.176.1"
   }
 }

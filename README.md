@@ -2,6 +2,13 @@
 
 ## Quick Start
 
+### Requirements
+
+- [Node.js](https://nodejs.org/en/) (v22.2.0)
+- [pnpm](https://pnpm.io/) (v9.1.4)
+- [Docker]
+- [protobuf]
+
 ### Install dependencies
 
 ```bash
