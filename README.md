@@ -1,12 +1,35 @@
 # MovieMatrix
 
+A Netflix-like web app built in Rust and Next.js that helps you choosing a movie you like.
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
+## About the project
+
+WIP
+
+### Built with
+
+[![Next][Next.js]][Next-url]
+[![Rust][Rust]][Rust-url]
+
 ## Quick Start
 
 ### Install dependencies
 
-```bash
-pnpm install
-```
+- Install node modules:
+
+    ```bash
+    pnpm install
+    ```
+
+- Install `cargo-watch` (for hot-reloading):
+
+    ```bash
+    cargo install cargo-watch
+    ```
 
 ### Start the development server
 
@@ -21,3 +44,15 @@ pnpm dev
 ```bash
 pnpm build
 ```
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/mathisbot/movie-matrix.svg?style=for-the-badge
+[contributors-url]: https://github.com/mathisbot/movie-matrix/graphs/contributors
+[stars-shield]: https://img.shields.io/github/stars/mathisbot/movie-matrix.svg?style=for-the-badge
+[stars-url]: https://github.com/mathisbot/movie-matrix/stargazers
+[issues-shield]: https://img.shields.io/github/issues/mathisbot/movie-matrix.svg?style=for-the-badge
+[issues-url]: https://github.com/mathisbot/movie-matrix/issues
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Rust]: https://img.shields.io/badge/Rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white
+[Next-url]: https://nextjs.org/
+[Rust-url]: https://rust-lang.org/
