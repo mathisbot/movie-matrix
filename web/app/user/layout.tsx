@@ -8,7 +8,7 @@ const UserPage = ({
   children: React.ReactNode;
 }>) => {
     return (
-      <div className="flex items-center justify-center bg-white mt-10">
+      <div className="flex items-center justify-center bg-white mt-7">
           <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
             {children}
           </div>

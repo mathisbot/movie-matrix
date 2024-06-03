@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import { FancyButton } from "../../(components)/FancyButton"
+import Link from 'next/link';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -55,10 +56,14 @@ const Register = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                       required />
               </div>
-              <div className="flex flex-row w-full items-center justify-center">
+              <div className="flex flex-row w-full items-center justify-center mb-3">
                     <FancyButton type="submit" className="">
                         Log In
                     </FancyButton>
+              </div>
+              <div className="flex flex-row w-full items-center justify-center">
+                <p className='mr-2'>No account ?</p>
+                <Link href="/user/signup" className='text-blue-600'>Sign Up</Link>
               </div>
           </form></>
   );

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 import { FancyButton } from "../../(components)/FancyButton"
 
@@ -94,11 +95,15 @@ const Register = () => {
                     required
                 />
             </div>
-            <div className="flex flex-row w-full items-center justify-center">
+            <div className="flex flex-row w-full items-center justify-center mb-3">
                     <FancyButton type="submit" className="">
                         Sign Up
                     </FancyButton>
-              </div>
+            </div>
+            <div className="flex flex-row w-full items-center justify-center">
+                <p className='mr-2'>Have an account ?</p>
+                <Link href="/user/login" className='text-blue-600'>Log In</Link>
+            </div>
         </form>
     </>
   );
