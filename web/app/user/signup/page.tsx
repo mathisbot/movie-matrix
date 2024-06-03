@@ -27,6 +27,7 @@ const Register = () => {
       return;
     }
     // Send request to API
+    console.log(formData);
   };
 
   return (
@@ -82,7 +83,7 @@ const Register = () => {
               required
             />
           </div>
-          <FancyButton type="submit" href="" className="">Sign Up</FancyButton>
+          <FancyButton type="submit" className="">Sign Up</FancyButton>
         </form>
       </div>
     </div>

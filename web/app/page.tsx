@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { FancyButton } from "./(components)/FancyButton";
 import { SearchBar } from "./(components)/SearchBar";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -27,13 +28,17 @@ export default function Home() {
                           alt="ViaRézo Logo"
                           className="dark:invert"
                           width={60}
-                          height={24}
+                          height={60}
                           priority
                       />
                   </a>
               </div>
-              <FancyButton type={undefined} href="/user/signup" className="fixed right-12 top-0 m-4">Sign Up</FancyButton>
-              <FancyButton type={undefined} href="/user/login" className="fixed right-0 top-0 m-4">Log In</FancyButton>
+              <Link href="/user/signup" className="fixed right-12 top-0 m-4">
+                <FancyButton type={undefined} className="">Sign Up</FancyButton>
+              </Link>
+              <Link href="/user/login" className="fixed right-0 top-0 m-4">
+                <FancyButton type={undefined} className="">Log In</FancyButton>
+              </Link>
           </div>
 
           <div className="relative z-[-1] flex flex-col place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
@@ -42,7 +47,7 @@ export default function Home() {
                   src="/matrix.svg"
                   alt="MovieMatrix Logo"
                   width={180}
-                  height={37}
+                  height={180}
                   priority
               />
               <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">MovieMatrix</h1>

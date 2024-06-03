@@ -54,7 +54,7 @@ const Register = () => {
               required
             />
           </div>
-          <FancyButton type="submit" href="" className="">Log In</FancyButton>
+          <FancyButton type="submit" className="">Log In</FancyButton>
         </form>
       </div>
     </div>

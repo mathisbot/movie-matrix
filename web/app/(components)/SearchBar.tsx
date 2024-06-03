@@ -1,6 +1,14 @@
+'use client'
+
 export function SearchBar({ children, className }: { children: React.ReactNode; className?: string; }) {
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // Search logic ?
+        console.log(e);
+    };
+
     return (
-        <form className={`form relative ${className}`}>
+        <form className={`form relative ${className}`} onSubmit={handleSearch}>
             <button className="absolute left-2 -translate-y-1/2 top-1/2 p-1">
                 <svg
                     width="17"
@@ -14,9 +22,9 @@ export function SearchBar({ children, className }: { children: React.ReactNode; 
                     <path
                         d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
                         stroke="currentColor"
-                        stroke-width="1.333"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        // stroke-width="1.333"
+                        // stroke-linecap="round"
+                        // stroke-linejoin="round"
                     ></path>
                 </svg>
             </button>
@@ -25,6 +33,7 @@ export function SearchBar({ children, className }: { children: React.ReactNode; 
                 placeholder="Search..."
                 required={false}
                 type="text"
+                name="query"
             />
             <button
                 type="reset"
@@ -38,8 +47,8 @@ export function SearchBar({ children, className }: { children: React.ReactNode; 
                     stroke="currentColor"
                 >
                     <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        // stroke-linecap="round"
+                        // stroke-linejoin="round"
                         d="M6 18L18 6M6 6l12 12"
                     ></path>
                 </svg>
