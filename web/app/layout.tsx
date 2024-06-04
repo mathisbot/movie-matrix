@@ -22,7 +22,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={roboto.className}>
-                <header className="bg-white p-4 flex justify-between items-center">
+                {/* <header className="bg-white p-4 flex justify-between items-center">
                     <div className="flex flex-row items-center">
                         <Link href="/" className="text-2xl font-bold mr-5">
                             MovieMatrix
@@ -49,7 +49,7 @@ export default function RootLayout({
                             Movies
                         </Link>
                     </nav>
-                </header>
+                </header> */}
                 {children}
             </body>
         </html>

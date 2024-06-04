@@ -36,5 +36,5 @@ if [[ -z "${SKIP_DOCKER}" ]]
 >&2 echo "Postgres is up and running on port ${DB_PORT} - running migrations now!"
 export DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@localhost:${DB_PORT}/${DB_NAME}
 sqlx database create
-sqlx migrate --source ./api/migrations run
+sqlx migrate run --source ./api/migrations
 >&2 echo "Postgres has been migrated, ready to go!"
