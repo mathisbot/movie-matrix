@@ -4,11 +4,12 @@ use tonic::transport::{
     server::{Router, TcpIncoming},
     Error, Server,
 };
+use tonic_middleware::InterceptorFor;
 
 use crate::{
     configuration::{DatabaseSettings, Settings},
-    proto::movie_service_server::MovieServiceServer,
-    proto::user_service_server::UserServiceServer,
+    interceptor::AuthInterceptor,
+    proto::{movie_service_server::MovieServiceServer, user_service_server::UserServiceServer},
     services::{MovieService, UserService},
 };
 
@@ -27,6 +28,11 @@ impl Application {
             configuration.application.host, configuration.application.port
         );
 
+        let auth_interceptor = AuthInterceptor {
+            config: configuration.application.clone(),
+            pg_pool: connection.clone(),
+        };
+
         let user_service = UserService::new(connection.clone(), configuration.application.clone());
         let movie_service = MovieService::new(connection.clone(), configuration.clone());
 
@@ -38,7 +44,10 @@ impl Application {
 
         let server = Server::builder()
             .add_service(UserServiceServer::new(user_service))
-            .add_service(MovieServiceServer::new(movie_service));
+            .add_service(InterceptorFor::new(
+                MovieServiceServer::new(movie_service),
+                auth_interceptor,
+            ));
 
         Ok(Self {
             port: assigned_port,

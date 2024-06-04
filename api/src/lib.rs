@@ -1,5 +1,6 @@
 pub mod configuration;
 pub mod domain;
+pub mod interceptor;
 pub mod services;
 pub mod startup;
 pub mod tasks;
