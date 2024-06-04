@@ -28,8 +28,7 @@ impl Application {
         );
 
         let user_service = UserService::new(connection.clone(), configuration.application.clone());
-        let movie_service =
-            MovieService::new(connection.clone(), configuration.application.clone());
+        let movie_service = MovieService::new(connection.clone(), configuration.clone());
 
         let listener = TcpListener::bind(address).await?;
 
@@ -37,8 +36,9 @@ impl Application {
 
         let incoming = TcpIncoming::from_listener(listener, true, None).unwrap();
 
-        let server = Server::builder().add_service(UserServiceServer::new(user_service));
-        //.add_service(MovieServiceServer::new(movie_service));
+        let server = Server::builder()
+            .add_service(UserServiceServer::new(user_service))
+            .add_service(MovieServiceServer::new(movie_service));
 
         Ok(Self {
             port: assigned_port,

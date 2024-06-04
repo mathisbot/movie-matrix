@@ -1,6 +1,7 @@
 use api::{
-    configuration::{get_configuration, DatabaseSettings},
+    configuration::{get_configuration, Settings},
     startup::{get_connection_pool, Application},
+    tasks::fetch_movies,
 };
 use sqlx::{Connection, Executor, PgConnection, PgPool};
 use uuid::Uuid;
@@ -18,7 +19,7 @@ pub async fn spawn_app() -> TestApp {
         c
     };
 
-    configure_database(&configuration.database).await;
+    configure_database(&configuration).await;
 
     let app = Application::build(configuration.clone())
         .await
@@ -33,19 +34,19 @@ pub async fn spawn_app() -> TestApp {
     }
 }
 
-async fn configure_database(config: &DatabaseSettings) {
+async fn configure_database(config: &Settings) {
     // Create a new database
-    let mut connection = PgConnection::connect_with(&config.without_db())
+    let mut connection = PgConnection::connect_with(&config.database.without_db())
         .await
         .expect("Failed to connect to Postgres.");
 
     connection
-        .execute(format!(r#"CREATE DATABASE "{}";"#, config.database_name).as_str())
+        .execute(format!(r#"CREATE DATABASE "{}";"#, config.database.database_name).as_str())
         .await
         .expect("Failed to create database.");
 
     // Migrate the database
-    let connection_pool = PgPool::connect_with(config.with_db())
+    let connection_pool = PgPool::connect_with(config.database.with_db())
         .await
         .expect("Failed to connect to Postgres.");
 
@@ -53,4 +54,6 @@ async fn configure_database(config: &DatabaseSettings) {
         .run(&connection_pool)
         .await
         .expect("Failed to migrate database.");
+
+    fetch_movies(config.clone(), 1).await;
 }

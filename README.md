@@ -17,6 +17,14 @@ WIP
 
 ## Quick Start
 
+### Environment variables
+
+The .env is currently not loaded by the Next.js server and by the rust api, so you need to export the environment variables manually.
+
+```bash
+export TMDB_API_KEY=your_tmdb_api_key
+```
+
 ### Requirements
 
 - [Node.js](https://nodejs.org/en/) (v22.2.0)
@@ -28,15 +36,15 @@ WIP
 
 - Install node modules:
 
-    ```bash
-    pnpm install
-    ```
+  ```bash
+  pnpm install
+  ```
 
 - Install `cargo-watch` (for hot-reloading):
 
-    ```bash
-    cargo install cargo-watch
-    ```
+  ```bash
+  cargo install cargo-watch
+  ```
 
 ### Start the development server
 
@@ -51,7 +59,6 @@ pnpm dev
 ```bash
 pnpm build
 ```
-
 
 [contributors-shield]: https://img.shields.io/github/contributors/mathisbot/movie-matrix.svg?style=for-the-badge
 [contributors-url]: https://github.com/mathisbot/movie-matrix/graphs/contributors

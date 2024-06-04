@@ -6,3 +6,5 @@ database:
   username: "postgres"
   password: "password"
   database_name: "movie-matrix"
+the_movie_db:
+  base_url: "https://api.themoviedb.org/3"

@@ -6,6 +6,7 @@ use sqlx::postgres::{PgConnectOptions, PgSslMode};
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application: ApplicationSettings,
+    pub the_movie_db: TheMovieApiSettings,
 }
 
 #[derive(serde::Deserialize, Clone)]
@@ -25,6 +26,12 @@ pub struct DatabaseSettings {
     pub port: u16,
     pub database_name: String,
     pub require_ssl: bool,
+}
+
+#[derive(serde::Deserialize, Clone)]
+pub struct TheMovieApiSettings {
+    pub api_key: String,
+    pub base_url: String,
 }
 
 impl DatabaseSettings {
@@ -65,7 +72,7 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         config::File::from(configuration_directory.join(environment.as_str())).required(true),
     )?;
 
-    settings.merge(config::Environment::with_prefix("app").separator("_"))?;
+    settings.merge(config::Environment::with_prefix("app").separator("__"))?;
 
     settings.try_into()
 }

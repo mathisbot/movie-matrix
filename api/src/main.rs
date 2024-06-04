@@ -1,12 +1,16 @@
 use api::{
     configuration::{get_configuration, DatabaseSettings},
     startup::Application,
+    tasks::fetch_movies,
 };
 use sqlx::{postgres::PgPoolOptions, PgPool};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let configuration = get_configuration().expect("Failed to read configuration.");
+
+    // Seed the database
+    fetch_movies(configuration.clone(), 200).await;
 
     let app = Application::build(configuration).await?;
 

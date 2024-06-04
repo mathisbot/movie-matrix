@@ -15,21 +15,29 @@ message Cast {
     string profile_url = 4;
 }
 
+
 message Movie {
-    string id = 1;
+    int32 id = 1;
     string title = 2;
-    string description = 3;
-    string rating = 4;
-    int32 duration = 5;
-    string genre = 6;
-    string release_date = 7;
-    string poster_url = 8;
-    string backdrop_url = 9;
-    repeated Cast casting = 10;
+    string overview = 3;
+    float vote_average = 4;
+    int32 runtime = 5;
+    string release_date = 6;
+    optional string poster_url = 7;
+    optional string backdrop_url = 8;
+    repeated Cast casting = 9;
+    repeated string genres = 10;
+}
+
+message MoviePreview {
+  int32 id = 1;
+  string title = 2;
+  optional string poster_url = 3;
+  float vote_average = 4;
 }
 
 message GetMovieRequest {
-  string id = 1;
+  int32 id = 1;
 }
 
 message GetMovieResponse {
@@ -38,10 +46,11 @@ message GetMovieResponse {
 
 message SearchMovieRequest {
   string query = 1;
+  int32 limit = 2;
 }
 
 message SearchMovieResponse {
-  repeated Movie movies = 1;
+  repeated MoviePreview movies = 1;
 }
 
 message GetMoviesRequest {
@@ -50,6 +59,6 @@ message GetMoviesRequest {
 }
 
 message GetMoviesResponse {
-  repeated Movie movies = 1;
+  repeated MoviePreview movies = 1;
 }
 
