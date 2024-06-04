@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use chrono::{Duration, Utc};
 use secrecy::ExposeSecret;
 use sqlx::PgPool;
@@ -15,11 +13,11 @@ use crate::{
 
 pub struct UserService {
     configuration: ApplicationSettings,
-    connection: Arc<PgPool>,
+    connection: PgPool,
 }
 
 impl UserService {
-    pub fn new(connection: Arc<PgPool>, configuration: ApplicationSettings) -> Self {
+    pub fn new(connection: PgPool, configuration: ApplicationSettings) -> Self {
         Self {
             connection,
             configuration,
@@ -33,7 +31,7 @@ impl UserService {
             user_id,
             expires_at
         )
-        .fetch_one(&*self.connection)
+        .fetch_one(&self.connection)
         .await
         .map_err(|e| {
             println!("Error: {:?}", e);
@@ -42,6 +40,7 @@ impl UserService {
 
         let token = SessionToken {
             session_id: record.id,
+            exp: expires_at.timestamp(),
         };
 
         Ok(token.encode(self.configuration.jwt_secret.expose_secret())?)
@@ -68,7 +67,7 @@ impl UserTrait for UserService {
             body.username,
             hashed_password.as_ref(),
         )
-        .fetch_one(&*self.connection)
+        .fetch_one(&self.connection)
         .await
         .map_err(|e| {
             println!("Error: {:?}", e);
@@ -97,7 +96,7 @@ impl UserTrait for UserService {
             r#"SELECT id, password FROM users WHERE username = $1"#,
             body.username,
         )
-        .fetch_one(&*self.connection)
+        .fetch_one(&self.connection)
         .await
         .map_err(|e| {
             println!("Error: {:?}", e);
@@ -144,7 +143,7 @@ impl UserTrait for UserService {
             r#"DELETE FROM sessions WHERE id = $1"#,
             session_token.session_id
         )
-        .execute(&*self.connection)
+        .execute(&self.connection)
         .await
         .map_err(|e| {
             println!("Error: {:?}", e);
@@ -174,7 +173,7 @@ impl UserTrait for UserService {
         let record = sqlx::query!(
             r#"SELECT username FROM users JOIN sessions ON sessions.user_id = users.id WHERE sessions.id = $1"#,
             session_token.session_id
-        ).fetch_one(&*self.connection).await.map_err(|e| {
+        ).fetch_one(&self.connection).await.map_err(|e| {
             println!("Error: {:?}", e);
             tonic::Status::internal("Failed to fetch user")
         })?;

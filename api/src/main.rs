@@ -1,31 +1,18 @@
-use std::sync::Arc;
-
 use api::{
     configuration::{get_configuration, DatabaseSettings},
-    proto::user_service_server::UserServiceServer,
-    services::UserService,
+    startup::Application,
 };
 use sqlx::{postgres::PgPoolOptions, PgPool};
-use tonic::transport::Server;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let configuration = get_configuration().expect("Failed to read configuration.");
 
-    let db_pool = get_connection_pool(&configuration.database);
-    let connection = Arc::new(db_pool);
+    let app = Application::build(configuration).await?;
 
-    let address = format!(
-        "{}:{}",
-        configuration.application.host, configuration.application.port
-    );
-
-    let user_service = UserService::new(connection.clone(), configuration.application);
-
-    Server::builder()
-        .add_service(UserServiceServer::new(user_service))
-        .serve(address.parse().unwrap())
-        .await?;
+    app.run_until_stopped()
+        .await
+        .expect("Failed to run application.");
 
     Ok(())
 }

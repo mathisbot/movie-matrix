@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package movie;
+
+service MovieService {
+  rpc GetMovie(GetMovieRequest) returns (GetMovieResponse);
+  rpc SearchMovie(SearchMovieRequest) returns (SearchMovieResponse);
+  rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
+}
+
+message Cast {
+    string id = 1;
+    string name = 2;
+    string role = 3;
+    string profile_url = 4;
+}
+
+message Movie {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string rating = 4;
+    int32 duration = 5;
+    string genre = 6;
+    string release_date = 7;
+    string poster_url = 8;
+    string backdrop_url = 9;
+    repeated Cast casting = 10;
+}
+
+message GetMovieRequest {
+  string id = 1;
+}
+
+message GetMovieResponse {
+  Movie movie = 1;
+}
+
+message SearchMovieRequest {
+  string query = 1;
+}
+
+message SearchMovieResponse {
+  repeated Movie movies = 1;
+}
+
+message GetMoviesRequest {
+  int32 offset = 1;
+  int32 limit = 2;
+}
+
+message GetMoviesResponse {
+  repeated Movie movies = 1;
+}
+
