@@ -1,9 +1,6 @@
 'server-only'
 
-import { Session } from "inspector";
 import { getUser as grpcGetUser } from "./grpc";
-import { GetUserRequest } from "@/services/user";
-import { RequestListener } from "http";
 import { cache } from "react";
 import { cookies } from "next/headers";
 
@@ -12,7 +9,7 @@ interface SessionToken {
     exp: number;
 }
 
-interface User {
+export interface User {
     username: string;
 }
 
@@ -41,5 +38,5 @@ export const getUser = cache(async () => {
         return null;
     }
     const resUser = await grpcGetUser({sessionToken: token.value});
-    return resUser;
+    return resUser as User;
 });

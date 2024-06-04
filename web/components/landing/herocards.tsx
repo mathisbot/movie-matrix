@@ -48,7 +48,7 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
 
         <CardContent className="text-center pb-2">
           <p>
-            Hello X! Come check out @moviematrix&apos;s special recommandation algorithm! It will make your life easier.
+            Hello X! Come check out @moviematrix&apos;s special recommendation algorithm! It will make your life easier.
           </p>
         </CardContent>
 
@@ -118,9 +118,9 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
             {/* <LightBulbIcon /> */}
           </div>
           <div>
-            <CardTitle>User-based recommandations</CardTitle>
+            <CardTitle>User-based recommendations</CardTitle>
             <CardDescription className="text-md mt-2">
-              <Link href={mainLinkHref} className="text-blue-600">{mainLinkLabel}</Link> and get your own recommandations based on your tastes, your ratings and other people&apos;s ratings.
+              <Link href={mainLinkHref} className="text-blue-600">{mainLinkLabel}</Link> and get your own recommendations based on your tastes, your ratings and other people&apos;s ratings.
             </CardDescription>
           </div>
         </CardHeader>
