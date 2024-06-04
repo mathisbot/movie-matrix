@@ -9,21 +9,20 @@ import { FAQ } from "@/components/landing/faq";
 import { Footer } from "@/components/landing/footer";
 
 export default async function Home() {
-    const username = await getUser();
-    // if (username===null) {
-    //     redirect("/login");
-    // }
+    const res = await getUser();
+    console.log(res);
+    const loggedIn = res !== null;
+    let sanitizedUsername = '';
+    if (loggedIn) {
+        sanitizedUsername = res.username;
+    }
 
     return (
         <>
-            <Navbar />
-            <Hero />
+            <Navbar loggedIn={loggedIn} username={sanitizedUsername}/>
+            <Hero loggedIn={loggedIn}/>
+            <span id="about" />
             <About />
-            {/* <HowItWorks />
-            <Features />
-            <Services />
-            <Cta />
-            <Testimonials /> */}
             <FAQ />
             <Footer />
         </>

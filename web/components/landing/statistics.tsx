@@ -10,7 +10,7 @@ export const Statistics = () => {
         description: "Monthly users",
       },
       {
-        quantity: "90k+",
+        quantity: "10k+",
         description: "Movies",
       },
       {

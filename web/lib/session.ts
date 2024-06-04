@@ -23,7 +23,7 @@ function parseToken(token: string): SessionToken {
 }
 
 function hasExpired(token: SessionToken): boolean {
-    return Date.now() > token.exp;
+    return Date.now() > token.exp*1000;
 }
 
 function isValid(token: string): boolean {
@@ -43,4 +43,3 @@ export const getUser = cache(async () => {
     const resUser = await grpcGetUser({sessionToken: token.value});
     return resUser;
 });
-

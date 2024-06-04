@@ -36,14 +36,8 @@ export const HeroCards = () => {
         <CardContent>MovieMatrix is threatening!</CardContent>
       </Card>
 
-      {/* Team */}
       <Card className="absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="mt-8 flex justify-center items-center pb-2">
-          {/* <Image
-            src="https://i.pravatar.cc/150?img=58"
-            alt="user avatar"
-            className="absolute grayscale-[0%] -top-12 rounded-full w-24 h-24 aspect-square object-cover"
-          ></Image> */}
           <CardTitle className="text-center">Émile Jaffrain</CardTitle>
           <CardDescription className="font-normal text-primary">
             Engineer @ MovieMatrix
@@ -52,7 +46,7 @@ export const HeroCards = () => {
 
         <CardContent className="text-center pb-2">
           <p>
-            Hey X, Come check @moviematrix&apos;s special recommandation algorithm! It will make your movie life easier.
+            Hello X! Come check out @moviematrix&apos;s special recommandation algorithm! It will make your life easier.
           </p>
         </CardContent>
 
@@ -91,7 +85,9 @@ export const HeroCards = () => {
         </CardHeader>
 
         <CardContent>
-          <Button className="w-full">Start</Button>
+          <Link href="/movies">
+          <Button className="w-full">Browse movies</Button>
+          </Link>
         </CardContent>
 
         <hr className="w-4/5 m-auto mb-4" />

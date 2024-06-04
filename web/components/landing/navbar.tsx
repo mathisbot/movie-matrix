@@ -14,28 +14,47 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface RouteProps {
   href: string;
   label: string;
 }
 
-const routeList: RouteProps[] = [
-  {
-    href: "#features",
-    label: "Features",
-  },
-  {
-    href: "/signup",
-    label: "Sign Up",
-  },
-  {
-    href: "/login",
-    label: "Log In",
-  },
-];
+export const Navbar = ({loggedIn, username}: {loggedIn: boolean; username: string}) => {
+    let routeList: RouteProps[] = [
+      {
+        href: "#about",
+        label: "About",
+      },
+      {
+        href: "/movies",
+        label: "Movies",
+      },
+    ];
 
-export const Navbar = () => {
+    if (loggedIn) {
+      routeList.push({
+        href: "/profile",
+        label: username,
+      });
+      routeList.push({
+        href: "/logout",
+        label: "Log Out",
+      });
+    }
+    else {
+      routeList.push({
+        href: "/signup",
+        label: "Sign Up",
+      });
+      routeList.push({
+        href: "/login",
+        label: "Log In",
+    });
+    }
+
     const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
@@ -68,40 +87,45 @@ export const Navbar = () => {
                 </SheetHeader>
                 <nav className="flex flex-col justify-center items-center gap-2 mt-4">
                   {routeList.map(({ href, label }: RouteProps) => (
-                    <a
+                    <Link
                       rel="noreferrer noopener"
                       key={label}
                       href={href}
                       onClick={() => setIsOpen(false)}
                     >
                       {label}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </SheetContent>
             </Sheet>
           </span>
 
-          <nav className="hidden md:flex gap-2">
+          <nav className="hidden md:flex gap-2 items-center">
             {routeList.map((route: RouteProps, i) => (
-              <a
+              <Link
                 rel="noreferrer noopener"
                 href={route.href}
                 key={i}
-                className="text-[17px] ml-3"
+                className="w-[75px]"
               >
+                {/* <Button className="ps-3"> */}
                 {route.label}
-              </a>
+                {/* </Button> */}
+              </Link>
             ))}
-        <a
-            rel="noreferrer noopener"
-            href="https://github.com/mathisbot/moviematrix"
-            target="_blank"
-            className="w-full md:w-1/3"
-          >
-            Github Repository
-            <GitHubLogoIcon className="ml-2 w-5 h-5" />
-          </a>
+
+          <div className="space-y-4 md:space-y-0 md:space-x-4">
+            <Link
+              rel="noreferrer noopener"
+              href="https://github.com/mathisbot/moviematrix"
+              target="_blank"
+              className="w-[150px] md:w-1/3"
+              ><Button className="w-[150px] md:w-1/3">
+                 <GitHubLogoIcon className="w-[150px]"></GitHubLogoIcon>
+              </Button>
+            </Link>
+          </div>
           </nav>
         </NavigationMenuList>
       </NavigationMenu>

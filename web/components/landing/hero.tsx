@@ -1,8 +1,11 @@
 import { HeroCards } from "./herocards";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export const Hero = () => {
+export const Hero = ({loggedIn}: {loggedIn: boolean}) => {
+  const mainLinkHref = loggedIn ? "/movies" : "/signup";
+  const mainLinkLabel = loggedIn ? "Movies" : "Sign Up";
   return (
     <section className="container grid lg:grid-cols-2 place-items-center py-20 md:py-32 gap-10">
       <div className="text-center lg:text-start space-y-6">
@@ -27,7 +30,7 @@ export const Hero = () => {
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
-          <Button className="w-full md:w-1/3">Sign Up</Button>
+          <Link href={mainLinkHref} className="w-full md:w-1/3"><Button className="w-full md:w-1/3">{mainLinkLabel}</Button></Link>
         </div>
       </div>
 
