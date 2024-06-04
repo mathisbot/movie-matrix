@@ -22,7 +22,7 @@ WIP
 The .env is currently not loaded by the Next.js server and by the rust api, so you need to export the environment variables manually.
 
 ```bash
-export TMDB_API_KEY=your_tmdb_api_key
+export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 ```
 
 ### Requirements
