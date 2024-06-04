@@ -36,7 +36,7 @@ export const Hero = ({loggedIn}: {loggedIn: boolean}) => {
 
       {/* Hero cards sections */}
       <div className="z-10">
-        <HeroCards />
+        <HeroCards loggedIn={loggedIn}/>
       </div>
 
       {/* Shadow effect */}

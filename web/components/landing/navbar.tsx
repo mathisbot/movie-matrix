@@ -118,7 +118,7 @@ export const Navbar = ({loggedIn, username}: {loggedIn: boolean; username: strin
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             <Link
               rel="noreferrer noopener"
-              href="https://github.com/mathisbot/moviematrix"
+              href="https://github.com/mathisbot/movie-matrix"
               target="_blank"
               className="w-[150px] md:w-1/3"
               ><Button className="w-[150px] md:w-1/3">

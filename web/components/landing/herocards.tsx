@@ -12,7 +12,9 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 import Link from "next/link";
 
-export const HeroCards = () => {
+export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
+  const mainLinkHref = loggedIn ? "/movies" : "/signup";
+  const mainLinkLabel = loggedIn ? "Browse Movies" : "Log In";
   return (
     <div className="hidden lg:flex flex-row flex-wrap gap-8 relative w-[700px] h-[500px]">
       {/* Testimonial */}
@@ -118,7 +120,7 @@ export const HeroCards = () => {
           <div>
             <CardTitle>User-based recommandations</CardTitle>
             <CardDescription className="text-md mt-2">
-              <Link href="/login" className="text-blue-600">Log In</Link> and get your own recommandations based on your tastes, your ratings and other people&apos;s ratings.
+              <Link href={mainLinkHref} className="text-blue-600">{mainLinkLabel}</Link> and get your own recommandations based on your tastes, your ratings and other people&apos;s ratings.
             </CardDescription>
           </div>
         </CardHeader>

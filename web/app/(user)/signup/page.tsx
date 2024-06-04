@@ -1,15 +1,41 @@
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 import { UserSignupForm } from "@/components/userSignup"
+import { getUser } from "@/lib/session"
 
 export const metadata: Metadata = {
   title: "Signup | MovieMatrix",
   description: "Authentication forms for MovieMatrix",
 }
 
-export default function AuthenticationPage() {
+const errors = [
+  '',
+  'Username already exists',
+  'Passwords do not match',
+] as const;
+
+export default async function AuthenticationPage({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const res = await getUser();
+  console.log(res);
+  if (res !== null) {
+    redirect("/movies");
+  }
+
+  let error = '';
+  if (searchParams !== undefined) {
+    if (searchParams.error !== undefined && typeof searchParams.error === 'string')
+    error = errors[parseInt(searchParams.error)];
+  }
+
   return (
     <>
       <div className="md:hidden">
@@ -52,6 +78,9 @@ export default function AuthenticationPage() {
               </h1>
               <p className="text-sm text-muted-foreground">
                 Enter your information below to create your account
+              </p>
+              <p className="text-red-700">
+                {error}
               </p>
             </div>
             <UserSignupForm />

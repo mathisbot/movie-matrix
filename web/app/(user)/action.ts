@@ -13,10 +13,17 @@ export async function signup(formData: FormData) {
     const cPassword = formData.get("c-password") as string;
 
     if (password !== cPassword) {
-        throw new Error("Passwords do not match")
+        redirect("/signup?error=2")
     }
 
-    const res = await userSignUp({ username, password }) as {sessionToken: string};
+    let res = null;
+    try {
+        res = await userSignUp({ username, password }) as {sessionToken: string};
+    }
+    catch {
+        redirect("/signup?error=1");
+    }
+
     const token = res.sessionToken;
     cookies().set("sessionToken", token, {});
 
@@ -28,7 +35,13 @@ export async function login(formData: FormData) {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
 
-    const res = await userLogIn({ username, password }) as {sessionToken: string};
+    let res = null;
+    try {
+        res = await userLogIn({ username, password }) as {sessionToken: string};
+    }
+    catch {
+        redirect("/login?error=1");
+    }
     const token = res.sessionToken;    
     cookies().set("sessionToken", token, {});
 
