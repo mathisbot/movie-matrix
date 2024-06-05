@@ -96,7 +96,7 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["Recommendation algorithm", "User ratings", "90k+ movies"].map(
+            {["Recommendation algorithm", "User ratings", "10k+ movies"].map(
               (benefit: string) => (
                 <span
                   key={benefit}
