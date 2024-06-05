@@ -1,27 +1,13 @@
-import MoviesPage, {MoviesResponse} from '@/components/movies/infinitescroll';
-import { getMovies } from '@/lib/grpc';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { getUser } from '@/lib/session';
-import ReactQueryProvider from "@/components/queryprovider";
+import QueryProvider from "@/components/query-provider";
+import { MoviesGrid } from "./movies-grid";
 
-export default async function Movies() {
-    const res = getUser();
-    if (!res) {
-        redirect("/login");
-    }
-    const token = cookies().get("sessionToken");
-    if (!token) {
-        redirect("/login");
-    }
-
-    const offset = 0;
-    const limit = 30;
-    const movies = await getMovies(token.value, { offset, limit }) as MoviesResponse;
-    
-    return (
-        <ReactQueryProvider>
-            <MoviesPage initialData={movies.movies} />
-        </ReactQueryProvider>
-    )
+export default async function MoviesPage() {
+  return (
+    <QueryProvider>
+      <div className="container mx-auto p-4">
+        <h1 className="text-4xl font-bold mb-6">Movies</h1>
+        <MoviesGrid />
+      </div>
+    </QueryProvider>
+  );
 }
