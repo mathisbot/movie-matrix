@@ -18,6 +18,7 @@ const VoteSlider = ({userVote, movieId}: {userVote: number, movieId: number}) =>
     const { data: vote, refetch: reVote, isFetching: isVoting, isFetched: isVoted } = useQuery({
         queryKey: ["search-movies"],
         queryFn: async () => (await voteMovie(movieId, value) as VoteMovieResponse),
+        enabled: false,
     });
 
     const handleClick = () => {

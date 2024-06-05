@@ -15,6 +15,7 @@ export function SearchMovies() {
     const { data: searchedMovies, refetch: refetchSearchedMovies, isFetching } = useQuery({
         queryKey: ["search-movies"],
         queryFn: async () => (await fetchSearchedMovies(searchMoviesQuery)).movies,
+        enabled: false,
     });
 
     return (
