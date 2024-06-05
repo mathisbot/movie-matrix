@@ -16,11 +16,11 @@ export default async function Home() {
     const sanitizedUsername = res !== null ? res.username : "";
 
     return (
-        <>
+        <div className="overflow-hidden min-w-screen">
             <Hero loggedIn={loggedIn}/>
             <span id="about" />
             <About />
             <FAQ />
-        </>
+        </div>
     );
 }
