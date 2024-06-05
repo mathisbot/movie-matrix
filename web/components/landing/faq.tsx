@@ -70,8 +70,7 @@ import {
               <AccordionTrigger className="text-left">
                 {question}
               </AccordionTrigger>
-  
-              <AccordionContent>{answer}</AccordionContent>
+              <AccordionContent>&nbsp;&nbsp;{answer}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

@@ -21,7 +21,7 @@ export function UserSignupForm({ className, ...props }: UserAuthFormProps) {
               id="username"
               name="username"
               placeholder=""
-              type="username"
+              type="userna  e"
               autoCapitalize="none"
               autoComplete="username"
               autoCorrect="off"
