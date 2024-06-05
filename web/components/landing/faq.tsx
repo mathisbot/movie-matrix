@@ -13,7 +13,7 @@ import {
   
   const FAQList: FAQProps[] = [
     {
-      question: "Is Movie Matrix really free?",
+      question: "Is MovieMatrix really free?",
       answer: "Yes. And it will always be.",
       value: "item-1",
     },

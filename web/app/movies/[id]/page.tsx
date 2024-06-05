@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { fetchMovieById } from '../actions';
 import { Card } from '@/components/ui/card';
 import { Navbar } from '@/components/landing/navbar';
+import { Footer } from '@/components/landing/footer';
 import { getUser } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
@@ -22,6 +23,12 @@ interface SingleMovieResponse {
     movie: SingleMovie;
 }
 
+function convertRuntime(runtime: number) {
+    const hours = Math.floor(runtime / 60);
+    const minutes = runtime % 60;
+    return `${hours}h ${minutes}m`;
+}
+
 const SingleMoviePage = async ({ params }: { params: { id: string } }) => {
     let res = await getUser();
     if (!res) {
@@ -29,9 +36,14 @@ const SingleMoviePage = async ({ params }: { params: { id: string } }) => {
     }
 
     const fromIdToMovie = async (id: string) => {
-        const realId = parseInt(id);
-        const movie = await fetchMovieById(realId) as SingleMovieResponse;
-        return movie.movie as SingleMovie;
+        try {
+            const realId = parseInt(id);
+            const movie = await fetchMovieById(realId) as SingleMovieResponse;
+            return movie.movie as SingleMovie;
+        }
+        catch {
+            return null;
+        }
     };
     
     const defaultMovie = {
@@ -57,21 +69,26 @@ const SingleMoviePage = async ({ params }: { params: { id: string } }) => {
     return (
         <>
             <Navbar loggedIn={true} username={res.username} />
-            <div className="p-4 h-screen" style={{backgroundImage: `url(${movie.backdropUrl})`, backgroundSize: "cover" }}>
+
+            <div className="p-5 min-h-screen" style={{backgroundImage: `url(${movie.backdropUrl})`, backgroundSize: "cover", backgroundRepeat: "repeat-y" }}>
                 <div className='flex flex-row item-center justify-center text-white align-center'>
                     <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
                 </div>
-                <div className='flex rounded-xl flex-row items-center justify-center bg-white border-spacing-1'>
-                    <Image src={movie.posterUrl} alt={movie.title} className="mb-4 rounded-xl h-full " width="350" height="525"  />
-                    <Card className='p-4'>
-                        <p className='mb-4'>{movie.title}</p>
-                        <p className="mb-4">🙋 Casting: {movie.casting}</p>
+                <div className='flex rounded-xl flex-row items-center bg-white p-4 justify-between'>
+                    <Image src={movie.posterUrl} alt={movie.title} className="mb-4 mr-2 rounded-xl" width="350" height="525"  />
+                    <Card className='ml-2 p-4 h-full'>
+                        <h2 className='mb-4 text-xl'>{movie.title}</h2>
                         <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
-                        <p className="mb-4">🕰️ Duration: {movie.runtime}</p>
-                        <p>{movie.overview}</p>
+                        <p className="mb-4">🕰️ Duration: {convertRuntime(movie.runtime)}</p>
+                        <p className='mb-4'>{movie.overview}</p>
+                        <p className="mb-4 text-lg">🙋 Casting:</p>
+                        <ul>
+                            {movie.casting.map((actor, index) => <li key={index}>{actor}</li>)}
+                        </ul>
                     </Card>
                 </div>
             </div>
+            <Footer />
         </>
     );
 };

@@ -37,7 +37,7 @@ export const Navbar = ({loggedIn, username}: {loggedIn: boolean; username: strin
     if (loggedIn) {
       routeList.push({
         href: "/profile",
-        label: username,
+        label: username.length > 20 ? `${username.substring(0, 15)}...` : username,
       });
       routeList.push({
         href: "/logout",
@@ -107,7 +107,7 @@ export const Navbar = ({loggedIn, username}: {loggedIn: boolean; username: strin
                 rel="noreferrer noopener"
                 href={route.href}
                 key={i}
-                className="w-[75px]"
+                className="px-2 flex items-center justify-center"
               >
                 {/* <Button className="ps-3"> */}
                 {route.label}
