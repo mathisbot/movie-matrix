@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import { fetchMovieById } from '../actions';
 import { Card } from '@/components/ui/card';
-import { Navbar } from '@/components/landing/navbar';
-import { Footer } from '@/components/landing/footer';
 import { getUser } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
@@ -68,8 +66,6 @@ const SingleMoviePage = async ({ params }: { params: { id: string } }) => {
 
     return (
         <>
-            <Navbar loggedIn={true} username={res.username} />
-
             <div className="p-5 min-h-screen" style={{backgroundImage: `url(${movie.backdropUrl})`, backgroundSize: "cover", backgroundRepeat: "repeat-y" }}>
                 <div className='flex flex-row item-center justify-center text-white align-center'>
                     <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
@@ -88,7 +84,6 @@ const SingleMoviePage = async ({ params }: { params: { id: string } }) => {
                     </Card>
                 </div>
             </div>
-            <Footer />
         </>
     );
 };
