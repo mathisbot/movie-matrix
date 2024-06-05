@@ -1,20 +1,20 @@
-import { Metadata } from "next"
-import Image from "next/image"
-import Link from "next/link"
-import { redirect } from "next/navigation"
+import { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-import { UserSignupForm } from "@/components/userSignup"
-import { getUser } from "@/lib/session"
+import { UserSignupForm } from "@/components/user-signup";
+import { getUser } from "@/lib/session";
 
 export const metadata: Metadata = {
   title: "Signup | MovieMatrix",
   description: "Authentication forms for MovieMatrix",
-}
+};
 
 const errors = [
-  '',
-  'Username already exists',
-  'Passwords do not match',
+  "",
+  "Username already exists",
+  "Passwords do not match",
 ] as const;
 
 export default async function AuthenticationPage({
@@ -25,15 +25,17 @@ export default async function AuthenticationPage({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const res = await getUser();
-  console.log(res);
   if (res !== null) {
     redirect("/movies");
   }
 
-  let error = '';
+  let error = "";
   if (searchParams !== undefined) {
-    if (searchParams.error !== undefined && typeof searchParams.error === 'string')
-    error = errors[parseInt(searchParams.error)];
+    if (
+      searchParams.error !== undefined &&
+      typeof searchParams.error === "string"
+    )
+      error = errors[parseInt(searchParams.error)];
   }
 
   return (
@@ -67,7 +69,7 @@ export default async function AuthenticationPage({
         />
           <div className="relative z-20 flex items-center text-lg font-medium">
             <Link href="/" className="text-2xl font-bold mr-5">
-                MovieMatrix
+              MovieMatrix
             </Link>
           </div>
           <div className="relative z-20 mt-auto">
@@ -87,9 +89,7 @@ export default async function AuthenticationPage({
               <p className="text-sm text-muted-foreground">
                 Enter your information below to create your account
               </p>
-              <p className="text-red-700">
-                {error}
-              </p>
+              <p className="text-red-700">{error}</p>
             </div>
             <UserSignupForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
@@ -100,11 +100,11 @@ export default async function AuthenticationPage({
               >
                 Log In
               </Link>{" "}
-               instead.
+              instead.
             </p>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

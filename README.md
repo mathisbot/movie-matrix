@@ -1,6 +1,6 @@
 # MovieMatrix
 
-A Netflix-like web app built in Rust and Next.js that helps you choosing a movie you like.
+A Netflix-like web app (except you can't actually watch movies) built in Rust and Next.js that helps you choosing a movie you like.
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -8,7 +8,27 @@ A Netflix-like web app built in Rust and Next.js that helps you choosing a movie
 
 ## About the project
 
-WIP
+The project was completed in 4 days by a team of 3 people.
+
+### Screenshots
+
+Here is a few screenshots of our UI.
+
+#### Landing page
+
+Features a few data for new users, and everything they need before they sign up!
+
+![Landing page](./.github/images/landing.webp)
+
+#### Movie browser
+
+Features an infinite scrolling page, recommended movies and a fast search.
+
+![Movie Browser](./.github/images/movie_browser.webp)
+
+### Technologies
+
+We've combined the speed of Rust with the ease of Next.js, using the gRPC protocol, to create an application that's fast, easy to maintain and simple to use.
 
 ### Built with
 
@@ -27,24 +47,24 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 
 ### Requirements
 
-- [Node.js](https://nodejs.org/en/) (v22.2.0)
-- [pnpm](https://pnpm.io/) (v9.1.4)
-- [Docker]
-- [protobuf]
+-   [Node.js](https://nodejs.org/en/) (v22.2.0)
+-   [pnpm](https://pnpm.io/) (v9.1.4)
+-   [Docker]
+-   [protobuf]
 
 ### Install dependencies
 
-- Install node modules:
+-   Install node modules:
 
-  ```bash
-  pnpm install
-  ```
+    ```bash
+    pnpm install
+    ```
 
-- Install `cargo-watch` (for hot-reloading):
+-   Install `cargo-watch` (for hot-reloading):
 
-  ```bash
-  cargo install cargo-watch
-  ```
+    ```bash
+    cargo install cargo-watch
+    ```
 
 ### Start the development server
 
