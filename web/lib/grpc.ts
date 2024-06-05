@@ -1,50 +1,23 @@
-'server-only'
+"server-only";
 
-import { GetUserRequest, GetUserResponse, UserServiceClient } from "@/services/user"
-import { MovieServiceClient, GetMovieRequest } from "@/services/movie"
-import { credentials, Metadata } from "@grpc/grpc-js"
+import { Metadata, createChannel, createClient } from "nice-grpc";
+import { UserServiceDefinition } from "@/services/user";
+import { MovieServiceDefinition } from "@/services/movie";
+import { getSessionToken } from "./session";
 
-import { promisify } from "util";
+const channel = createChannel(process.env.API_URL!);
 
-const userService = new UserServiceClient("localhost:4000", credentials.createInsecure());
-export const userSignUp = promisify(userService.signUp.bind(userService))
-export const userLogIn = promisify(userService.login.bind(userService))
-export const getUser = promisify(userService.getUser.bind(userService)) as (request: GetUserRequest) => Promise<GetUserResponse>;
+export const userServiceClient = createClient(UserServiceDefinition, channel);
+export const movieServiceClient = createClient(MovieServiceDefinition, channel);
 
-const movieService = new MovieServiceClient("localhost:4000", credentials.createInsecure());
-export const getMovie = (token: string, data: any) => (
-    new Promise((resolve, reject) => {
-        const metadata = new Metadata();
-        metadata.set("authorization", `Bearer ${token}`);
-        const call = movieService.getMovie(data, metadata, (err, res) => {
-            if (err) {
-                reject(err)
-            }
-            resolve(res);
-        })
-    })
-);
-export const getMovies = (token: string, data: any) => (
-    new Promise((resolve, reject) => {
-        const metadata = new Metadata();
-        metadata.set("authorization", `Bearer ${token}`);
-        const call = movieService.getMovies(data, metadata, (err, res) => {
-            if (err) {
-                reject(err)
-            }
-            resolve(res);
-        })
-    })
-);
-export const searchMovies = (token: string, data: any) => (
-    new Promise((resolve, reject) => {
-        const metadata = new Metadata();
-        metadata.set("authorization", `Bearer ${token}`);
-        const call = movieService.searchMovie(data, metadata, (err, res) => {
-            if (err) {
-                reject(err)
-            }
-            resolve(res);
-        })
-    })
-);
+export function getAuthMetadata() {
+  const token = getSessionToken();
+
+  if (!token) {
+    throw new Error("No session token found");
+  }
+
+  return {
+    metadata: Metadata({ authorization: `Bearer ${token}` }),
+  };
+}

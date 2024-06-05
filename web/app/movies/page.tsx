@@ -22,6 +22,7 @@ export default async function Movies() {
     
     return (
         <>
+            <Navbar loggedIn={true} username={res.username} />
             <div className="container mx-auto p-4 mt-3">
                 <h1 className="text-4xl font-bold mb-6">Movies</h1>
                 <h2 className='text-2xl font-bold mb-4'>Search</h2>
@@ -33,6 +34,7 @@ export default async function Movies() {
                     <MoviesPage initialData={movies.movies} />
                 </ReactQueryProvider>
             </div>
+            <Footer />
         </>
     )
 }

@@ -1,55 +1,24 @@
-'use server'
+"use server";
 
-import { getUser } from "@/lib/session";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getMovie, getMovies, searchMovies } from "@/lib/grpc";
-import { MoviesResponse, Movie } from "@/components/movies/infinitescroll";
+import { getAuthMetadata, movieServiceClient } from "@/lib/grpc";
 
-const limitPerFetch = 10;
-const baseOffset = 30;
+const limitPerFetch = 50;
 
-export const fetchMovies = async ({pageParam = 0}) => {
-    const res = getUser();
-    if (!res) {
-        redirect("/login");
-    }
-    const token = cookies().get("sessionToken");
-    if (!token) {
-        redirect("/login");
-    }
+export async function fetchMovies({ pageParam = 0 }) {
+  const offset = pageParam * limitPerFetch;
+  const limit = limitPerFetch;
 
-    const offset = pageParam * limitPerFetch + baseOffset;
-    const limit = limitPerFetch
-    const movies = await getMovies(token.value, { offset, limit });
-    return movies
-}
-
-export const fetchMovieById = async (id: number) => {
-    const res = getUser();
-    if (!res) {
-        redirect("/login");
-    }
-    const token = cookies().get("sessionToken");
-    if (!token) {
-        redirect("/login");
-    }
-
-    const movie = await getMovie(token.value, { id });
-    return movie
+  return await movieServiceClient.getMovies(
+    { offset, limit },
+    getAuthMetadata()
+  );
 }
 
 export const fetchSearchedMovies = async (query: string) => {
-    const res = getUser();
-    if (!res) {
-        redirect("/login");
-    }
-    const token = cookies().get("sessionToken");
-    if (!token) {
-        redirect("/login");
-    }
+  const limit = 20;
 
-    const limit = 20;
-    const movies = await searchMovies(token.value, { query, limit }) as MoviesResponse;
-    return movies.movies as Movie[];
-}
+  return await movieServiceClient.searchMovie(
+    { query, limit },
+    getAuthMetadata()
+  );
+};
