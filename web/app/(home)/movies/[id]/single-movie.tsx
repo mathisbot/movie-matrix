@@ -4,8 +4,9 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { CastingCard } from "./casting-card";
-import VoteButton from "./vote-button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
 
 function convertRuntime(runtime: number) {
   const hours = Math.floor(runtime / 60);
@@ -69,22 +70,23 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
             <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
             <div className="mb-4 ml-8">
                 <p>Did you like it ?</p>
-                <div className="my-3">
-                    <VoteButton></VoteButton>
+                <div className="my-3 flex flex-row w-screen">
+                    <Button>Vote</Button>
+                    <Slider min={1} max={10} step={1} className="w-[20rem] ml-3"></Slider>
                 </div>
             </div>
             <p className="mb-4">🕰️ Duration: {convertRuntime(movie.runtime)}</p>
-            <Tabs defaultValue="synopsis" className="w-full">
+            <Tabs defaultValue="synopsis">
               <TabsList>
                 <TabsTrigger value="synopsis">Synopsis</TabsTrigger>
                 <TabsTrigger value="casting">🙋 Casting</TabsTrigger>
               </TabsList>
-              <TabsContent value="synopsis">
+              <TabsContent value="synopsis" className="max-w-full">
                 <Card className="w-full p-3 bg-gray-100">
                   <p className="mb-4 text-justify">{movie.overview}</p>
                 </Card>
               </TabsContent>
-              <TabsContent value="casting" className="w-full">
+              <TabsContent value="casting">
                 <Card className="w-full p-3 bg-gray-100">
                   <ul className="grid grid-flow-row w-full">
                     {movie.casting.map((actor, index) => (
