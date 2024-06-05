@@ -29,7 +29,7 @@ export const Footer = () => {
           <div>
             <a
               rel="noreferrer noopener"
-              href="https://twitter.com/mathisbato/"
+              href=""
               className="opacity-60 hover:opacity-100"
             >
               Twitter

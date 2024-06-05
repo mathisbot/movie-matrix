@@ -55,7 +55,7 @@ export default async function AuthenticationPage({
         <div 
           className="absolute inset-0 opacity-100" 
           style={{ 
-            backgroundImage: 'url(movie_matrix.svg)', 
+            backgroundImage: 'url(movie_matrix.webp)', 
             backgroundSize: 'cover', 
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'

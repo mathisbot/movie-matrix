@@ -6,12 +6,12 @@ import { Header } from "@/components/header";
 
 export default function Home() {
   return (
-    <>
+    <div className="overflow-hidden min-w-screen">
       <Header />
       <Hero />
       <About />
       <FAQ />
       <Footer />
-    </>
+    </div>
   );
 }
