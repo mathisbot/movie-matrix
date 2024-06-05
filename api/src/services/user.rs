@@ -53,8 +53,6 @@ impl UserTrait for UserService {
         &self,
         request: tonic::Request<SignUpRequest>,
     ) -> Result<tonic::Response<SignUpResponse>, tonic::Status> {
-        println!("Got a request: {:?}", request);
-
         let body: SignUpRequest = request.into_inner();
 
         let hashed_password = HashedPassword::hash(body.password).map_err(|e| {
@@ -88,8 +86,6 @@ impl UserTrait for UserService {
         &self,
         request: tonic::Request<LoginRequest>,
     ) -> Result<tonic::Response<LoginResponse>, tonic::Status> {
-        println!("Got a request: {:?}", request);
-
         let body = request.into_inner();
 
         let record = sqlx::query!(
@@ -126,8 +122,6 @@ impl UserTrait for UserService {
         &self,
         request: tonic::Request<LogoutRequest>,
     ) -> Result<tonic::Response<LogoutResponse>, tonic::Status> {
-        println!("Got a request: {:?}", request);
-
         let body = request.into_inner();
 
         let session_token = SessionToken::decode(
@@ -157,8 +151,6 @@ impl UserTrait for UserService {
         &self,
         request: tonic::Request<GetUserRequest>,
     ) -> Result<tonic::Response<GetUserResponse>, tonic::Status> {
-        println!("Got a request: {:?}", request);
-
         let body = request.into_inner();
 
         let session_token = SessionToken::decode(

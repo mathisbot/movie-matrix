@@ -28,6 +28,7 @@ export async function middleware(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ token: sessionCookie.value }),
+      cache: "no-cache",
     }
   ).then((res) => res.json());
 

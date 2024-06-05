@@ -84,7 +84,7 @@ pub async fn fetch_movies(configuration: Settings, pages_to_fetch: i32) {
         println!("Fetching page {} of {}", page, pages_to_fetch);
 
         let url = format!(
-            "{}/movie/popular?language=fr-FR&page={}",
+            "{}/movie/popular?page={}",
             configuration.the_movie_db.base_url, page
         );
         let response = client

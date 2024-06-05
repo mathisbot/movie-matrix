@@ -1,6 +1,8 @@
+use hora::index::hnsw_idx::HNSWIndex;
 use sqlx::PgPool;
 
 use crate::configuration::Settings;
+use crate::predictions::{build_index, predict};
 use crate::proto::movie_service_server::MovieService as MovieTrait;
 use crate::proto::{
     GetMovieRequest, GetMovieResponse, GetMoviesRequest, GetMoviesResponse, SearchMovieRequest,
@@ -28,13 +30,17 @@ struct Movie {
 pub struct MovieService {
     configuration: Settings,
     connection: PgPool,
+    index: HNSWIndex<f32, i32>,
 }
 
 impl MovieService {
-    pub fn new(connection: PgPool, configuration: Settings) -> Self {
+    pub async fn new(connection: PgPool, configuration: Settings) -> Self {
+        let index = build_index(&connection).await;
+
         Self {
             connection,
             configuration,
+            index,
         }
     }
 }
@@ -45,14 +51,7 @@ impl MovieTrait for MovieService {
         &self,
         request: tonic::Request<GetMovieRequest>,
     ) -> Result<tonic::Response<GetMovieResponse>, tonic::Status> {
-        let user_id = request
-            .metadata()
-            .get("user_id")
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .parse::<i32>()
-            .unwrap();
+        let user_id = extract_user_id(&request);
 
         let body = request.into_inner();
 
@@ -111,15 +110,64 @@ impl MovieTrait for MovieService {
         &self,
         request: tonic::Request<GetMoviesRequest>,
     ) -> Result<tonic::Response<GetMoviesResponse>, tonic::Status> {
+        let user_id = extract_user_id(&request);
+
         let body = request.into_inner();
+
+        let has_user_rated_movies = sqlx::query!(
+            r#"
+            SELECT EXISTS (
+                SELECT 1 FROM ratings
+                WHERE user_id = $1
+            ) as "exists!"
+            "#,
+            user_id
+        )
+        .fetch_one(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to check if user has rated movies"))?
+        .exists;
+
+        if has_user_rated_movies == true {
+            let recommended_movies = predict(&self.index, &self.connection, user_id, 10).await;
+            let mut movies = sqlx::query!(
+                r#"
+                SELECT * FROM movies
+                WHERE id = ANY($1)
+                "#,
+                recommended_movies.as_slice()
+            )
+            .fetch_all(&self.connection)
+            .await
+            .map_err(|_| tonic::Status::internal("Failed to fetch movies"))?;
+
+            // sort movies by the order of the recommended_movies
+            movies.sort_by_key(|movie| recommended_movies.iter().position(|id| *id == movie.id));
+
+            let poster_base_url = "https://image.tmdb.org/t/p/w500/";
+
+            let movies: Vec<crate::proto::MoviePreview> = movies
+                .into_iter()
+                .map(|movie| crate::proto::MoviePreview {
+                    id: movie.id,
+                    title: movie.title,
+                    poster_url: movie
+                        .poster_path
+                        .map(|text| format!("{}{}", poster_base_url, text)),
+                    vote_average: movie.vote_average,
+                })
+                .collect();
+
+            return Ok(tonic::Response::new(GetMoviesResponse { movies }));
+        };
 
         let movies = sqlx::query!(
             r#"
-            SELECT * FROM movies
-            ORDER BY popularity DESC
-            LIMIT $1
-            OFFSET $2
-            "#,
+                SELECT * FROM movies
+                ORDER BY popularity DESC
+                LIMIT $1
+                OFFSET $2
+                "#,
             body.limit as i64,
             body.offset as i64
         )
@@ -214,4 +262,15 @@ impl MovieTrait for MovieService {
 
         Ok(tonic::Response::new(crate::proto::VoteMovieResponse {}))
     }
+}
+
+fn extract_user_id<T>(request: &tonic::Request<T>) -> i32 {
+    request
+        .metadata()
+        .get("user_id")
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .parse::<i32>()
+        .unwrap()
 }
