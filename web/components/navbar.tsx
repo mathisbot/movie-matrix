@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import {
@@ -21,43 +21,46 @@ interface RouteProps {
   label: string;
 }
 
-export const Navbar = async ({user}: {user: {username: string} | null}) => {
-    const routeList: RouteProps[] = [
-      {
-        href: "/#about",
-        label: "About",
-      },
-      {
-        href: "/movies",
-        label: "Movies",
-      },
-    ];
-;
-    const loggedIn = user !== null;
-    const username = user?.username || "";
+export const Navbar = async ({
+  user,
+}: {
+  user: { username: string } | null;
+}) => {
+  const routeList: RouteProps[] = [
+    {
+      href: "/#about",
+      label: "About",
+    },
+    {
+      href: "/movies",
+      label: "Movies",
+    },
+  ];
+  const loggedIn = user !== null;
+  const username = user?.username || "";
 
-    let authList: RouteProps[] = [];
+  let authList: RouteProps[] = [];
 
-    if (loggedIn) {
-      authList.push({
-        href: "/profile",
-        label: username.length > 20 ? `${username.substring(0, 15)}...` : username,
-      });
-      authList.push({
-        href: "/logout",
-        label: "Log Out",
-      });
-    }
-    else {
-      authList.push({
-        href: "/signup",
-        label: "Sign Up",
-      });
-      authList.push({
-        href: "/login",
-        label: "Log In",
+  if (loggedIn) {
+    authList.push({
+      href: "/profile",
+      label:
+        username.length > 20 ? `${username.substring(0, 15)}...` : username,
     });
-    }
+    authList.push({
+      href: "/logout",
+      label: "Log Out",
+    });
+  } else {
+    authList.push({
+      href: "/signup",
+      label: "Sign Up",
+    });
+    authList.push({
+      href: "/login",
+      label: "Log In",
+    });
+  }
 
   return (
     <NavigationMenu className="mx-auto items-center">
@@ -71,26 +74,25 @@ export const Navbar = async ({user}: {user: {username: string} | null}) => {
             MovieMatrix
           </a>
           <nav className="hidden md:flex gap-2 items-center ml-3">
-          {routeList.map((route: RouteProps, i) => (
-            <Link
-              rel="noreferrer noopener"
-              href={route.href}
-              key={i}
-              className="px-2 flex items-center justify-center"
-            >
-              {/* <Button className="ps-3"> */}
-              {route.label}
-              {/* </Button> */}
-            </Link>
-          ))}
+            {routeList.map((route: RouteProps, i) => (
+              <Link
+                rel="noreferrer noopener"
+                href={route.href}
+                key={i}
+                className="px-2 flex items-center justify-center"
+              >
+                {/* <Button className="ps-3"> */}
+                {route.label}
+                {/* </Button> */}
+              </Link>
+            ))}
           </nav>
         </NavigationMenuItem>
 
         {/* mobile */}
         <span className="flex md:hidden">
           <Sheet>
-            <SheetTrigger className="px-2">
-            </SheetTrigger>
+            <SheetTrigger className="px-2"></SheetTrigger>
 
             <SheetContent side={"left"}>
               <SheetHeader>
@@ -100,11 +102,7 @@ export const Navbar = async ({user}: {user: {username: string} | null}) => {
               </SheetHeader>
               <nav className="flex flex-col justify-center items-center gap-2 mt-4">
                 {routeList.map(({ href, label }: RouteProps) => (
-                  <Link
-                    rel="noreferrer noopener"
-                    key={label}
-                    href={href}
-                  >
+                  <Link rel="noreferrer noopener" key={label} href={href}>
                     {label}
                   </Link>
                 ))}
@@ -127,17 +125,18 @@ export const Navbar = async ({user}: {user: {username: string} | null}) => {
             </Link>
           ))}
 
-        <div className="space-y-4 md:space-y-0 md:space-x-4">
-          <Link
-            rel="noreferrer noopener"
-            href="https://github.com/mathisbot/movie-matrix"
-            target="_blank"
-            className="w-[150px] md:w-1/3"
-            ><Button className="w-[150px] md:w-1/3">
+          <div className="space-y-4 md:space-y-0 md:space-x-4">
+            <Link
+              rel="noreferrer noopener"
+              href="https://github.com/mathisbot/movie-matrix"
+              target="_blank"
+              className="w-[150px] md:w-1/3"
+            >
+              <Button className="w-[150px] md:w-1/3">
                 <GitHubLogoIcon className="w-[150px]"></GitHubLogoIcon>
-            </Button>
-          </Link>
-        </div>
+              </Button>
+            </Link>
+          </div>
         </nav>
       </NavigationMenuList>
     </NavigationMenu>

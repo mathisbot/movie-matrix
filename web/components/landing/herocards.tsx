@@ -12,7 +12,7 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 import Link from "next/link";
 
-export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
+export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
   const mainLinkHref = loggedIn ? "/movies" : "/signup";
   const mainLinkLabel = loggedIn ? "Browse Movies" : "Log In";
   return (
@@ -20,8 +20,7 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
       {/* Testimonial */}
       <Card className="absolute w-[340px] -top-[15px] drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="flex flex-row items-center gap-4 pb-2">
-
-        <Avatar>
+          <Avatar>
             <AvatarImage
               alt="Netflix logo"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/2048px-Netflix_icon.svg.png"
@@ -48,7 +47,8 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
 
         <CardContent className="text-center pb-2">
           <p>
-            Hello X! Come check out @moviematrix&apos;s special recommendation algorithm! It will make your life easier.
+            Hello X! Come check out @moviematrix&apos;s special recommendation
+            algorithm! It will make your life easier.
           </p>
         </CardContent>
 
@@ -81,14 +81,12 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
             <span className="text-muted-foreground"> /month</span>
           </div>
 
-          <CardDescription>
-            MovieMatrix is free. Forever.
-          </CardDescription>
+          <CardDescription>MovieMatrix is free. Forever.</CardDescription>
         </CardHeader>
 
         <CardContent>
           <Link href="/movies">
-          <Button className="w-full">Browse movies</Button>
+            <Button className="w-full">Browse movies</Button>
           </Link>
         </CardContent>
 
@@ -98,10 +96,7 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
           <div className="space-y-4">
             {["Recommendation algorithm", "User ratings", "90k+ movies"].map(
               (benefit: string) => (
-                <span
-                  key={benefit}
-                  className="flex"
-                >
+                <span key={benefit} className="flex">
                   {/* <Check className="text-green-500" />{" "} */}
                   <h3 className="ml-2">{benefit}</h3>
                 </span>
@@ -120,11 +115,15 @@ export const HeroCards = ({loggedIn}: {loggedIn: boolean}) => {
           <div>
             <CardTitle>User-based recommendations</CardTitle>
             <CardDescription className="text-md mt-2">
-              <Link href={mainLinkHref} className="text-blue-600">{mainLinkLabel}</Link> and get your own recommendations based on your tastes, your ratings and other people&apos;s ratings.
+              <Link href={mainLinkHref} className="text-blue-600">
+                {mainLinkLabel}
+              </Link>{" "}
+              and get your own recommendations based on your tastes, your
+              ratings and other people&apos;s ratings.
             </CardDescription>
           </div>
         </CardHeader>
       </Card>
     </div>
   );
-};
+}

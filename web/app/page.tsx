@@ -1,26 +1,17 @@
 import { Hero } from "@/components/landing/hero";
 import { About } from "@/components/landing/about";
 import { FAQ } from "@/components/landing/faq";
-import { cookies } from "next/headers";
-import { getUser } from "@/lib/session";
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
-export default async function Home() {
-    let res = null;
-    try {
-        res = await getUser();
-    }
-    catch {
-        cookies().delete("sessionToken");
-    }
-    const loggedIn = res !== null;
-    const sanitizedUsername = res !== null ? res.username : "";
-
-    return (
-        <>
-            <Hero loggedIn={loggedIn}/>
-            <span id="about" />
-            <About />
-            <FAQ />
-        </>
-    );
+export default function Home() {
+  return (
+    <>
+      <Header />
+      <Hero />
+      <About />
+      <FAQ />
+      <Footer />
+    </>
+  );
 }
