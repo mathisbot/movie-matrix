@@ -22,3 +22,11 @@ export const fetchSearchedMovies = async (query: string) => {
         getAuthMetadata()
     );
 };
+
+export const voteMovie = async (id: number, vote: number) => {
+    const request = { id, vote };
+    return await movieServiceClient.voteMovie(
+        request,
+        getAuthMetadata()
+    );
+}

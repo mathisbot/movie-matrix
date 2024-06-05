@@ -1,5 +1,6 @@
 import { getAuthMetadata, movieServiceClient } from "@/lib/grpc";
-import SingleMovie from "./single-movie"
+import SingleMovie from "./single-movie";
+import { QueryProvider } from "@/components/query-provider";
 
 export default async function MoviePage({
   params,
@@ -22,6 +23,8 @@ export default async function MoviePage({
     }
 
     return (
-        <SingleMovie movie={movie}></SingleMovie>
+        <QueryProvider>
+            <SingleMovie movie={movie}></SingleMovie>
+        </QueryProvider>
     );
 }

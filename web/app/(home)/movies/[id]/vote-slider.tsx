@@ -3,12 +3,25 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { voteMovie } from '../actions';
+import { VoteMovieResponse } from '@/services/movie';
+import { Loader } from 'lucide-react';
 
-const VoteSlider = ({userVote}: {userVote: number}) => {
+const VoteSlider = ({userVote, movieId}: {userVote: number, movieId: number}) => {
     const [value, setValue] = useState(userVote);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(parseInt(e.target.value));
+    }
+
+    const { data: vote, refetch: reVote, isFetching: isVoting, isFetched: isVoted } = useQuery({
+        queryKey: ["search-movies"],
+        queryFn: async () => (await voteMovie(movieId, value) as VoteMovieResponse),
+    });
+
+    const handleClick = () => {
+        reVote();
     }
 
     return (
@@ -27,7 +40,13 @@ const VoteSlider = ({userVote}: {userVote: number}) => {
                     className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer dark:bg-black"
                 />
             </div>
-            <Button>Vote</Button>
+            <Button onClick={handleClick}>
+                {isVoting ? (
+                    <Loader className="mx-3 size-5 animate-spin " />
+                ) : isVoted ? (
+                    "Voted!"
+                ) : "Vote"}
+            </Button>
         </div>
     );
 };
