@@ -1,10 +1,10 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { signup } from "@/app/(user)/action"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { signup } from "@/app/(user)/action";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -14,23 +14,19 @@ export function UserSignupForm({ className, ...props }: UserAuthFormProps) {
       <form action={signup}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <Label htmlFor="username">
-              Username
-            </Label>
+            <Label htmlFor="username">Username</Label>
             <Input
               id="username"
               name="username"
               placeholder=""
-              type="userna  e"
+              type="username"
               autoCapitalize="none"
               autoComplete="username"
               autoCorrect="off"
             />
           </div>
           <div className="grid gap-1">
-            <Label htmlFor="password">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               name="password"
@@ -42,9 +38,7 @@ export function UserSignupForm({ className, ...props }: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <Label htmlFor="c-password">
-              Confirm password
-            </Label>
+            <Label htmlFor="c-password">Confirm password</Label>
             <Input
               id="c-password"
               name="c-password"
@@ -80,5 +74,5 @@ export function UserSignupForm({ className, ...props }: UserAuthFormProps) {
         GitHub
       </Button> */}
     </div>
-  )
+  );
 }

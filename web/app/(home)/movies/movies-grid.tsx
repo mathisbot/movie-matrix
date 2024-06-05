@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { fetchMovies } from "@/app/movies/actions";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
+import { fetchMovies } from "./actions";
 
 export function MoviesGrid() {
   const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
