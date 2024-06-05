@@ -8,7 +8,11 @@ function convertRuntime(runtime: number) {
   return `${hours}h ${minutes}m`;
 }
 
-export default async function MoviePage({ params }: { params: { id: string } }) {
+export default async function MoviePage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const parsedId = parseInt(params.id);
 
   if (isNaN(parsedId)) {

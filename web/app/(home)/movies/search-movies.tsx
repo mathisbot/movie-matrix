@@ -5,14 +5,14 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { Input } from "../../components/ui/input";
-import { fetchSearchedMovies } from "@/app/movies/actions";
+import { Input } from "@/components/ui/input";
+import { fetchSearchedMovies } from "./actions";
 
 export function SearchMovies() {
   const [searchMoviesQuery, setSearchMoviesQuery] = useState<string>("");
 
   const { data: searchedMovies, refetch: refetchSearchedMovies } = useQuery({
-    queryKey: ["movies"],
+    queryKey: ["search-movies"],
     queryFn: async () => (await fetchSearchedMovies(searchMoviesQuery)).movies,
   });
 
