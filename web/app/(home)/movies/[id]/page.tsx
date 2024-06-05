@@ -30,7 +30,7 @@ export default async function MoviePage({
 
   return (
     <div
-      className="p-5 min-h-screen"
+      className="p-5"
       style={
         movie.backdropUrl
           ? {
