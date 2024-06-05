@@ -45,6 +45,15 @@ impl MovieTrait for MovieService {
         &self,
         request: tonic::Request<GetMovieRequest>,
     ) -> Result<tonic::Response<GetMovieResponse>, tonic::Status> {
+        let user_id = request
+            .metadata()
+            .get("user_id")
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .parse::<i32>()
+            .unwrap();
+
         let body = request.into_inner();
 
         let response = reqwest::Client::new()
@@ -62,6 +71,19 @@ impl MovieTrait for MovieService {
             .await
             .map_err(|_| tonic::Status::internal("Failed to parse movie"))?;
 
+        let user_rating = sqlx::query!(
+            r#"
+            SELECT rating FROM ratings
+            WHERE user_id = $1 AND movie_id = $2
+            "#,
+            user_id,
+            movie.id
+        )
+        .fetch_optional(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch user rating"))
+        .map(|rating| rating.map(|rating| rating.rating))?;
+
         let movie = crate::proto::Movie {
             id: movie.id,
             title: movie.title,
@@ -71,12 +93,13 @@ impl MovieTrait for MovieService {
                 .map(|text| format!("https://image.tmdb.org/t/p/w500/{}", text)),
             backdrop_url: movie
                 .backdrop_path
-                .map(|text| format!("https://image.tmdb.org/t/p/w500/{}", text)),
+                .map(|text| format!("https://image.tmdb.org/t/p/w1280/{}", text)),
             release_date: movie.release_date,
             runtime: movie.runtime,
             vote_average: movie.vote_average,
             casting: vec![],
             genres: movie.genres.into_iter().map(|genre| genre.name).collect(),
+            user_vote: user_rating,
         };
 
         Ok(tonic::Response::new(GetMovieResponse {
@@ -154,5 +177,41 @@ impl MovieTrait for MovieService {
             .collect();
 
         Ok(tonic::Response::new(SearchMovieResponse { movies }))
+    }
+
+    async fn vote_movie(
+        &self,
+        request: tonic::Request<crate::proto::VoteMovieRequest>,
+    ) -> Result<tonic::Response<crate::proto::VoteMovieResponse>, tonic::Status> {
+        let user_id = request
+            .metadata()
+            .get("user_id")
+            .unwrap()
+            .to_str()
+            .unwrap()
+            .parse::<i32>()
+            .unwrap();
+
+        let body = request.into_inner();
+
+        sqlx::query!(
+            r#"
+            INSERT INTO ratings (user_id, movie_id, rating)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (user_id, movie_id) DO UPDATE
+            SET rating = $3
+            "#,
+            user_id,
+            body.movie_id,
+            body.vote,
+        )
+        .execute(&self.connection)
+        .await
+        .map_err(|e| {
+            println!("{:?}", e.to_string());
+            tonic::Status::internal("Failed to vote movie")
+        })?;
+
+        Ok(tonic::Response::new(crate::proto::VoteMovieResponse {}))
     }
 }

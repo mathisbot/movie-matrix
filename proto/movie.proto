@@ -6,6 +6,7 @@ service MovieService {
   rpc GetMovie(GetMovieRequest) returns (GetMovieResponse);
   rpc SearchMovie(SearchMovieRequest) returns (SearchMovieResponse);
   rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
+  rpc VoteMovie(VoteMovieRequest) returns (VoteMovieResponse);
 }
 
 message Cast {
@@ -27,6 +28,7 @@ message Movie {
     optional string backdrop_url = 8;
     repeated Cast casting = 9;
     repeated string genres = 10;
+    optional float user_vote = 11;
 }
 
 message MoviePreview {
@@ -62,3 +64,9 @@ message GetMoviesResponse {
   repeated MoviePreview movies = 1;
 }
 
+message VoteMovieRequest {
+  int32 movie_id = 1;
+  float vote = 2;
+}
+
+message VoteMovieResponse {}
