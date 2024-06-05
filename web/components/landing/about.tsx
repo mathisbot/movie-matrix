@@ -1,13 +1,8 @@
 import { Statistics } from "./statistics";
 
-import Image from "next/image";
-
 export const About = () => {
   return (
-    <section
-      id="about"
-      className="container py-24 sm:py-32"
-    >
+    <section id="about" className="container py-24 sm:py-32">
       <div className="bg-muted/50 border rounded-lg py-12">
         <div className="px-6 flex flex-col-reverse md:flex-row gap-8 md:gap-12">
           <div className="bg-green-0 flex flex-col justify-between">
@@ -19,7 +14,10 @@ export const About = () => {
                 MovieMatrix
               </h2>
               <p className="text-xl text-muted-foreground mt-4">
-                MovieMatrix is a project made in a week by a team of 3 Engineering students at CentaleSupélec. The goal was to create a website that would help users find movies to watch based on their preferences.
+                MovieMatrix is a project made in a week by a team of 3
+                Engineering students at CentaleSupélec. The goal was to create a
+                website that would help users find movies to watch based on
+                their preferences.
               </p>
             </div>
 
