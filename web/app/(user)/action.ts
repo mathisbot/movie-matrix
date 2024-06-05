@@ -26,17 +26,17 @@ export async function signup(formData: FormData) {
 }
 
 export async function login(formData: FormData) {
-  const username = formData.get("username") as string;
-  const password = formData.get("password") as string;
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
 
-  let res = null;
-  try {
-    res = await userServiceClient.login({ username, password });
-  } catch {
-    redirect("/login?error=1");
-  }
+    let res = null;
+    try {
+        res = await userServiceClient.login({ username, password });
+    } catch {
+        redirect("/login?error=1");
+    }
 
-  cookies().set("sessionToken", res.sessionToken, {});
+    cookies().set("sessionToken", res.sessionToken, {});
 
-  redirect("/movies");
+    redirect("/movies");
 }

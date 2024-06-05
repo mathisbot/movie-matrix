@@ -118,7 +118,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                       <Tabs defaultValue="synopsis">
                           <TabsList>
                               <TabsTrigger value="synopsis">
-                                  Synopsis
+                                  📖 Synopsis
                               </TabsTrigger>
                               <TabsTrigger value="casting">
                                   🙋 Casting

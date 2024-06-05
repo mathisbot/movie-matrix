@@ -4,17 +4,17 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function GET() {
-  const tokenCookie = cookies().get("sessionToken");
+    const tokenCookie = cookies().get("sessionToken");
 
-  if (tokenCookie) {
-    await userServiceClient.logout({
-      sessionToken: tokenCookie.value,
-    });
+    if (tokenCookie) {
+        await userServiceClient.logout({
+        sessionToken: tokenCookie.value,
+        });
 
-    cookies().delete("sessionToken");
-  }
+        cookies().delete("sessionToken");
+    }
 
-  // TODO: Currently need a user action (manually reload page) to revalidate the cache
-  revalidatePath("/", "page");
-  redirect("/login");
+    // TODO: Currently need a user action (manually reload page) to revalidate the cache
+    revalidatePath("/", "page");
+    redirect("/login");
 }

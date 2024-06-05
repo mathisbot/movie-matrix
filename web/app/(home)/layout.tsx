@@ -2,15 +2,15 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 
 export default function HomeLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <>
-      <Header />
-      {children}
-      <Footer />
-    </>
-  );
+    return (
+        <>
+        <Header />
+        {children}
+        <Footer />
+        </>
+    );
 }
