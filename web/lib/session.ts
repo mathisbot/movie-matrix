@@ -37,6 +37,13 @@ export const getUser = cache(async () => {
     if (!isValid(token.value)) {
         return null;
     }
-    const resUser = await grpcGetUser({sessionToken: token.value});
-    return resUser as User;
+    let resUser = null;
+    try {
+        resUser = await grpcGetUser({sessionToken: token.value});
+    }
+    catch (e) {
+        // Cookie may be invalid
+        cookies().delete("sessionToken");
+    }
+    return resUser;
 });
