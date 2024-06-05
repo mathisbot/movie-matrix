@@ -36,17 +36,23 @@ export function getSessionToken(): string | undefined {
   return token.value;
 }
 
-export const getUser = cache(async () => {
-  const token = cookies().get("sessionToken");
+export const getUser = cache(async (token?: string) => {
   if (!token) {
-    return null;
+    const cookieToken = cookies().get("sessionToken");
+
+    if (!cookieToken) {
+      return null;
+    }
+
+    token = cookieToken.value;
   }
-  if (!isValid(token.value)) {
+
+  if (!isValid(token)) {
     return null;
   }
   try {
     const user = await userServiceClient.getUser({
-      sessionToken: token.value,
+      sessionToken: token,
     });
     return { username: user.username };
   } catch {
