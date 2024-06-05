@@ -70,7 +70,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
             <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
             <div className="mb-4 ml-8">
                 <p>Did you like it ?</p>
-                <div className="my-3 flex flex-row w-screen">
+                <div className="my-3 flex flex-row">
                     <Button>Vote</Button>
                     <Slider min={1} max={10} step={1} className="w-[20rem] ml-3"></Slider>
                 </div>
