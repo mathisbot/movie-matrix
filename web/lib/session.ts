@@ -1,6 +1,6 @@
 'server-only'
 
-import { getUser as grpcGetUser } from "./grpc";
+import { getUser as grpcGetUser, getMovies as grpcGetMovies } from "./grpc";
 import { cache } from "react";
 import { cookies } from "next/headers";
 
