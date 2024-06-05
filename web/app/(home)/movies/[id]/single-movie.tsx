@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { CastingCard } from "./casting-card";
+import VoteSlider from "./vote-slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
       const parallax = document.getElementById("parallax");
       if (parallax) {
         const scrolled = window.scrollY;
-        parallax.style.transform = `translateY(${scrolled * 0.5 - 35}px)`;
+        parallax.style.transform = `translateY(${scrolled * 0.65 - 35}px)`;
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -44,17 +45,21 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
           }
         >
           <div className="relative z-10 h-full flex items-end">
-            <div className="relative z-10 w-screen">
-                <div className="absolute z-15 inset-0 bg-black opacity-35 w-full"></div>
-              <h2 className="relative text-7xl text-white mb-10 p-10">
-                {/* <span className="absolute inset-0 bg-black opacity-50 z-0 rounded-lg h-full w-screen"></span> */}
-                <span className="relative z-10">{movie.title}</span>
-              </h2>
+            <div className="relative z-10 w-screen h-[200px]">
+                <div className="absolute z-15 inset-0 bg-black opacity-40 w-full h-full"></div>
+                <div className="relative mb-10">
+                <h2 className="text-7xl text-white px-10 mt-4">
+                  {/* <span className="absolute inset-0 bg-black opacity-50 z-0 rounded-lg h-full w-screen"></span> */}
+                  <span className="relative z-10">{movie.title}</span>
+                </h2>
+                <p className="relative px-10 text-white text-lg">Rating: {movie.voteAverage.toFixed(1)} /10</p>
+                <p className="relative px-10 text-white text-lg">Duration: {convertRuntime(movie.runtime)}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="relative z-20 bg-white">
+      <div className="relative z-20 bg-gray-100">
         <div className="flex rounded-xl flex-row p-5 justify-between items-center align-middle">
           {movie.posterUrl && (
             <Image
@@ -66,16 +71,17 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
             />
           )}
           <div className="ml-2 p-4 h-full w-full">
-            <h2 className="mb-4 text-xl">{movie.title}</h2>
-            <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
+            <h2 className="mb-4 text-3xl">{movie.title}</h2>
             <div className="mb-4 ml-8">
-                <p>Did you like it ?</p>
-                <div className="my-3 flex flex-row">
+                <p>Already watched it ? How did you like it ?</p>
+                <div className="my-3 flex flex-row items-center content-center">
                     <Button>Vote</Button>
-                    <Slider min={1} max={10} step={1} className="w-[20rem] ml-3"></Slider>
+                    {/* <Slider min={1} max={10} step={1} className="w-[20rem] ml-3"></Slider> */}
+                    <VoteSlider></VoteSlider>
                 </div>
             </div>
-            <p className="mb-4">🕰️ Duration: {convertRuntime(movie.runtime)}</p>
+            <p className="mb-4 text-lg">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
+            <p className="mb-4 text-lg">🕰️ Duration: {convertRuntime(movie.runtime)}</p>
             <Tabs defaultValue="synopsis">
               <TabsList>
                 <TabsTrigger value="synopsis">Synopsis</TabsTrigger>

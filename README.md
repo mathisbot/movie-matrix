@@ -1,6 +1,6 @@
 # MovieMatrix
 
-A Netflix-like web app (except you can't actually watch movies) built in Rust and Next.js that helps you choosing a movie you like.
+A movie recommendation web application built with Rust and Next.js that helps you choose the next movie you're going to watch.
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -8,38 +8,42 @@ A Netflix-like web app (except you can't actually watch movies) built in Rust an
 
 ## About the project
 
-The project was completed in 4 days by a team of 3 people.
+This application was produced as part of a project by 3 students in the space of 4 days.
 
 ### Screenshots
 
-Here is a few screenshots of our UI.
+Here are a few screenshots of our user interface.
 
 #### Landing page
 
-Features a few data for new users, and everything they need before they sign up!
+The landing page features everything new users need before they sign up: presentation, data, FAQ, ...
 
 ![Landing page](./.github/images/landing.webp)
 
 #### Movie browser
 
-Features an infinite scrolling page, recommended movies and a fast search.
+Here, you can take advantage of the infinite scroll function to select a film from a selection based on our recommendation algorithm, or search for a particular film.
 
 ![Movie Browser](./.github/images/movie_browser.webp)
 
-### Technologies
+#### Film info
 
-We've combined the speed of Rust with the ease of Next.js, using the gRPC protocol, to create an application that's fast, easy to maintain and simple to use.
+By clicking on a movie's card, you can view information about it, such as its rating, cast and synopsis.
+
+WIP
 
 ### Built with
 
 [![Next][Next.js]][Next-url]
 [![Rust][Rust]][Rust-url]
 
+Using the gRPC protocol, we've combined the power and speed of Rust with the ease and capabilities of Next.js, resulting in an application that's quick and easy to use, but also easy to maintain.
+
 ## Quick Start
 
 ### Environment variables
 
-The .env is currently not loaded by the Next.js server and by the rust api, so you need to export the environment variables manually.
+The `.env` is currently not loaded by the Next.js server nor by the rust api, so its is needed to export the environment variables manually:
 
 ```bash
 export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
@@ -49,8 +53,8 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 
 -   [Node.js](https://nodejs.org/en/) (v22.2.0)
 -   [pnpm](https://pnpm.io/) (v9.1.4)
--   [Docker]
--   [protobuf]
+-   [Docker](https://www.docker.com/)
+-   [protobuf](https://protobuf.dev/) (v27.0)
 
 ### Install dependencies
 
@@ -68,7 +72,7 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 
 ### Start the development server
 
-This will start the development server at `http://localhost:3000` and the API server at `TBD`.
+This will start the development server at `http://localhost:3000` and the API server at `http://localhost:4000`.
 
 ```bash
 pnpm dev
