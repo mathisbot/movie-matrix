@@ -34,7 +34,7 @@ impl Application {
         };
 
         let user_service = UserService::new(connection.clone(), configuration.application.clone());
-        let movie_service = MovieService::new(connection.clone(), configuration.clone());
+        let movie_service = MovieService::new(connection.clone(), configuration.clone()).await;
 
         let listener = TcpListener::bind(address).await?;
 
