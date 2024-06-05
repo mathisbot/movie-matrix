@@ -38,17 +38,18 @@ export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
       </Card>
 
       <Card className="absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
-        <CardHeader className="mt-8 flex justify-center items-center pb-2">
-          <CardTitle className="text-center">Émile Jaffrain</CardTitle>
+        <CardHeader className="mt-5 flex justify-center items-center pb-3">
+          <CardTitle className="text-center text-lg">Latest Feature</CardTitle>
           <CardDescription className="font-normal text-primary">
-            Engineer @ MovieMatrix
+            on MovieMatrix
           </CardDescription>
         </CardHeader>
 
+        <hr className="w-4/5 m-auto mb-4" />
+
         <CardContent className="text-center pb-2">
           <p>
-            Hello X! Come check out @moviematrix&apos;s special recommendation
-            algorithm! It will make your life easier.
+            You can now enjoy infinite recommendations in the movie browser!
           </p>
         </CardContent>
 
@@ -56,15 +57,14 @@ export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
           <div>
             <a
               rel="noreferrer noopener"
-              href="https://github.com/emilejaff"
+              href=""
               target="_blank"
               className={buttonVariants({
                 variant: "ghost",
                 size: "sm",
               })}
             >
-              <span className="sr-only">Github icon</span>
-              <GitHubLogoIcon className="w-5 h-5" />
+              Help us out on{" "}<GitHubLogoIcon className="ml-1 w-5 h-5" />
             </a>
           </div>
         </CardFooter>
@@ -94,11 +94,10 @@ export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
 
         <CardFooter className="flex">
           <div className="space-y-4">
-            {["Recommendation algorithm", "User ratings", "10k+ movies"].map(
+            {["10k+ movies", "260k+ ratings"].map(
               (benefit: string) => (
                 <span key={benefit} className="flex">
-                  {/* <Check className="text-green-500" />{" "} */}
-                  <h3 className="ml-2">{benefit}</h3>
+                  <h3 className="ml-2">• {benefit}</h3>
                 </span>
               )
             )}
