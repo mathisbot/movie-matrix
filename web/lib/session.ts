@@ -44,9 +44,12 @@ export const getUser = cache(async () => {
   if (!isValid(token.value)) {
     return null;
   }
-  const user = await userServiceClient.getUser({
-    sessionToken: token.value,
-  });
-
-  return { username: user.username };
+  try {
+    const user = await userServiceClient.getUser({
+      sessionToken: token.value,
+    });
+    return { username: user.username };
+  } catch {
+    return null;
+  }
 });

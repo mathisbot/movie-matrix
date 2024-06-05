@@ -1,5 +1,12 @@
 import { getAuthMetadata, movieServiceClient } from "@/lib/grpc";
 import Image from "next/image";
+import { Card } from "@/components/ui/card";
+
+function convertRuntime(runtime: number) {
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+  return `${hours}h ${minutes}m`;
+}
 
 export async function MoviePage({ params }: { params: { id: string } }) {
   const parsedId = parseInt(params.id);
@@ -19,34 +26,43 @@ export async function MoviePage({ params }: { params: { id: string } }) {
 
   return (
     <div
-      className="p-4 h-screen"
-      style={{
-        backgroundImage: `url(${movie.backdropUrl})`,
-        backgroundSize: "cover",
-      }}
+      className="p-5 min-h-screen"
+      style={
+        movie.backdropUrl
+          ? {
+              backgroundImage: `url(${movie.backdropUrl})`,
+              backgroundSize: "cover",
+              backgroundRepeat: "repeat-y",
+            }
+          : {}
+      }
     >
-      <div className="flex flex-row item-center justify-center text-white">
+      <div className="flex flex-row item-center justify-center text-white align-center">
         <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
       </div>
-      <div className="flex flex-row items-center justify-center bg-white border-spacing-1">
+      <div className="flex rounded-xl flex-row items-center bg-white p-4 justify-between">
         {movie.posterUrl && (
           <Image
             src={movie.posterUrl}
             alt={movie.title}
-            className="mb-4 rounded-xl h-full"
+            className="mb-4 mr-2 rounded-xl"
             width="350"
             height="525"
           />
         )}
-        <div>
-          <p className="mb-4">🙋 Casting: {JSON.stringify(movie.casting)}</p>
-          <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)}</p>
-          <p className="mb-4">🕰️ Duration: {movie.runtime}</p>
-          <p>{movie.overview}</p>
-        </div>
+        <Card className="ml-2 p-4 h-full">
+          <h2 className="mb-4 text-xl">{movie.title}</h2>
+          <p className="mb-4">⭐ Rating: {movie.voteAverage.toFixed(1)} /10</p>
+          <p className="mb-4">🕰️ Duration: {convertRuntime(movie.runtime)}</p>
+          <p className="mb-4">{movie.overview}</p>
+          <p className="mb-4 text-lg">🙋 Casting:</p>
+          <ul>
+            {movie.casting.map((actor, index) => (
+              <li key={index}>{JSON.stringify(actor)}</li>
+            ))}
+          </ul>
+        </Card>
       </div>
     </div>
   );
 }
-
-export default MoviePage;
