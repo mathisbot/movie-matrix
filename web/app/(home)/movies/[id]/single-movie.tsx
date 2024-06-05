@@ -101,7 +101,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                       <h2 className="mb-4 text-3xl">{movie.title}</h2>
                       <div className="mb-4 ml-8">
                           <p>Already watched ? Tell us how you liked it:</p>
-                          <VoteSlider userVote={movie.userVote? movie.userVote : 5}></VoteSlider>
+                          <VoteSlider userVote={movie.userVote? movie.userVote : 5} movieId={movie.id}></VoteSlider>
                       </div>
                       <p className="mb-4 text-lg">
                           ⭐{movie.voteAverage.toFixed(1)} /10
@@ -125,14 +125,14 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                               </TabsTrigger>
                           </TabsList>
                           <TabsContent value="synopsis" className="max-w-full">
-                              <Card className="w-full p-3 bg-gray-100">
+                              <Card className="w-full p-3 bg-white">
                                   <p className="mb-4 text-justify">
                                       {movie.overview}
                                   </p>
                               </Card>
                           </TabsContent>
                           <TabsContent value="casting">
-                              <Card className="w-full p-3 bg-gray-100">
+                              <Card className="w-full p-3 bg-white">
                                   <ul className="grid grid-flow-row w-full">
                                       {movie.casting.map((cast, index) => (
                                           <li key={index}>
