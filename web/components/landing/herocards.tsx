@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import nfLogo from "@/public/netflix-logo.webp";
 
 import Link from "next/link";
 
@@ -17,13 +18,12 @@ export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
   const mainLinkLabel = loggedIn ? "Browse Movies" : "Log In";
   return (
     <div className="hidden lg:flex flex-row flex-wrap gap-8 relative w-[700px] h-[500px]">
-      {/* Testimonial */}
       <Card className="absolute w-[340px] -top-[15px] drop-shadow-xl shadow-black/10 dark:shadow-white/10">
         <CardHeader className="flex flex-row items-center gap-4 pb-2">
           <Avatar>
             <AvatarImage
               alt="Netflix logo"
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/2048px-Netflix_icon.svg.png"
+              src={nfLogo.src}
             />
             <AvatarFallback>NF</AvatarFallback>
           </Avatar>
