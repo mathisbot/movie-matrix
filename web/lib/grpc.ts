@@ -36,3 +36,15 @@ export const getMovies = (token: string, data: any) => (
         })
     })
 );
+export const searchMovies = (token: string, data: any) => (
+    new Promise((resolve, reject) => {
+        const metadata = new Metadata();
+        metadata.set("authorization", `Bearer ${token}`);
+        const call = movieService.searchMovie(data, metadata, (err, res) => {
+            if (err) {
+                reject(err)
+            }
+            resolve(res);
+        })
+    })
+);

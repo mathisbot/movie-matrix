@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { fetchMovies } from '@/app/movies/actions';
-import {InfiniteData, useInfiniteQuery, QueryClientProvider, QueryClient} from '@tanstack/react-query';
+import {InfiniteData, useInfiniteQuery, QueryClientProvider, QueryClient, useQuery} from '@tanstack/react-query';
 import { Button } from '../ui/button';
 
 export interface Movie {
@@ -54,12 +54,10 @@ const MoviesPage = ({initialData}: {initialData: Movie[]})  => {
         while (isFetchingNextPage) {
             console.log(isFetchingNextPage);
         }
-        console.log(data);
     }
     
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-4xl font-bold mb-6">Movies</h1>
+        <>
             <div className="grid grid-auto sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                 {data!.pages.map((page, pageIndex) =>
                     page.map((movie) => (
@@ -74,10 +72,10 @@ const MoviesPage = ({initialData}: {initialData: Movie[]})  => {
                         </Link>
                     ))
                 )}
-                <Button onClick={handleClick} disabled={!hasNextPage}>Load More</Button>
+                {/* <Button onClick={handleClick} disabled={!hasNextPage}>Load More</Button> */}
                 {isFetchingNextPage && <div>Loading...</div>}
             </div>
-        </div>
+        </>
     );
 };
     

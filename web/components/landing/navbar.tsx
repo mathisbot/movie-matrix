@@ -25,7 +25,7 @@ interface RouteProps {
 export const Navbar = ({loggedIn, username}: {loggedIn: boolean; username: string}) => {
     let routeList: RouteProps[] = [
       {
-        href: "#about",
+        href: "/#about",
         label: "About",
       },
       {
