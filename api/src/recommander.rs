@@ -47,12 +47,13 @@ fn vectorize_movie(
     model: &SentenceEmbeddingsModel,
 ) -> Vec<f32> {
     let mut vector = vec![0.0; genres_map.len() + 1];
+
     vector[0] = movie.popularity;
 
     if movie.genres.is_some() {
         for genre in movie.genres.as_ref().unwrap() {
             if let Some(index) = genres_map.get(genre) {
-                vector[*index] = 1.0;
+                vector[*index + 1] = 1.0;
             } else {
                 panic!("Genre not found in genres map")
             }
@@ -68,13 +69,13 @@ fn vectorize_movie(
 
 pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
     if fs::metadata("index.bin").is_ok() {
-        println!("Index found, loading...");
+        println!("Index found");
         return HNSWIndex::load("index.bin").unwrap();
     }
 
     let genres_map = build_genres_map(pg_pool.clone()).await;
 
-    let dimension = genres_map.len() + 1 + 384;
+    let dimension = 1 + genres_map.len() + 384;
 
     let movies = sqlx::query_as!(
         RecommandationMovie,
@@ -131,7 +132,7 @@ pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
         .expect("Failed to insert movie vector");
     }
 
-    index.build(Metric::Angular).unwrap();
+    index.build(Metric::Euclidean).unwrap();
 
     println!("Index built!");
 
@@ -148,39 +149,37 @@ pub async fn predict(
 ) -> Vec<i32> {
     let genres_map = build_genres_map(pg_pool.clone()).await;
 
-    let dimension = genres_map.len() + 1 + 384;
+    let dimension = 1 + genres_map.len() + 384;
 
     let user_rated_movies = sqlx::query!(
         r#"
-        SELECT movies.id, movies.popularity, movies.overview, ARRAY_AGG(movie_genres.genre_id) as "genres: Vec<i32>", ratings.rating, movies.vote_average, movies.embedding
+        SELECT movies.id, movies.embedding, ratings.rating
         FROM movies
-        JOIN movie_genres ON movies.id = movie_genres.movie_id
         JOIN ratings ON movies.id = ratings.movie_id
         WHERE ratings.user_id = $1
         GROUP BY movies.id, ratings.rating
         "#,
         user_id
-    ).fetch_all(pg_pool)
-    .await.expect("Failed to fetch user rated movies");
+    )
+    .fetch_all(pg_pool)
+    .await
+    .expect("Failed to fetch user rated movies");
 
     let user_vector = user_rated_movies
         .iter()
         .fold(vec![0.0; dimension], |mut acc, movie| {
             if movie.embedding.is_none() {
-                println!("Movie {} has no embedding", movie.id);
-                return acc;
+                panic!("Movie {} has no embedding", movie.id);
             }
 
             let vector: Vec<f32> = serde_json::from_str(&movie.embedding.clone().unwrap()).unwrap();
 
             for (index, value) in vector.iter().enumerate() {
-                acc[index] += value * movie.rating / user_rated_movies.len() as f32
+                acc[index] += value * (movie.rating - 5.0) / 5.0
             }
 
             acc
         });
-
-    println!("User vector: {:?}", user_vector);
 
     let results = index.search(&user_vector, k);
 
