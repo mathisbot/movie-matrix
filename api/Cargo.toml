@@ -23,7 +23,8 @@ reqwest = { version = "0.11", default-features = false, features = [
     "rustls-tls",
 ] }
 hora = "0.1"
-
+rust-bert = { version = "0.22.0", features = ["download-libtorch"] }
+serde_json = "1"
 
 [dependencies.sqlx]
 version = "0.7.4"

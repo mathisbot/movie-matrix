@@ -2,12 +2,12 @@ use hora::index::hnsw_idx::HNSWIndex;
 use sqlx::PgPool;
 
 use crate::configuration::Settings;
-use crate::predictions::{build_index, predict};
 use crate::proto::movie_service_server::MovieService as MovieTrait;
 use crate::proto::{
     GetMovieRequest, GetMovieResponse, GetMoviesRequest, GetMoviesResponse, SearchMovieRequest,
     SearchMovieResponse,
 };
+use crate::recommander::{build_index, predict};
 
 #[derive(serde::Deserialize)]
 struct Genre {
@@ -231,14 +231,7 @@ impl MovieTrait for MovieService {
         &self,
         request: tonic::Request<crate::proto::VoteMovieRequest>,
     ) -> Result<tonic::Response<crate::proto::VoteMovieResponse>, tonic::Status> {
-        let user_id = request
-            .metadata()
-            .get("user_id")
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .parse::<i32>()
-            .unwrap();
+        let user_id = extract_user_id(&request);
 
         let body = request.into_inner();
 
