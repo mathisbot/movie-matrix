@@ -4,12 +4,12 @@ import { getAuthMetadata, movieServiceClient } from "@/lib/grpc";
 
 const limitPerFetch = 50;
 
-export async function fetchMovies({ pageParam = 0 }) {
+export async function fetchMovies({ pageParam = 0, genre = "*" } : { pageParam?: number, genre?: string }) {
   const offset = pageParam * limitPerFetch;
   const limit = limitPerFetch;
 
   return await movieServiceClient.getPopularMovies(
-    { offset, limit },
+    { offset, limit, genre },
     getAuthMetadata()
   );
 }

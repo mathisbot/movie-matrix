@@ -15,7 +15,7 @@ export function MoviesGrid() {
     const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
         queryKey: ["movies"],
         queryFn: async ({ pageParam = 0 }) => ({
-            data: await fetchMovies({ pageParam }),
+            data: await fetchMovies({ pageParam, genre: genreSearch }),
             nextCursor: pageParam + 1,
         }),
         getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -40,7 +40,7 @@ export function MoviesGrid() {
         };
     }, [fetchNextPage, isFetchingNextPage]);
 
-    const [genreSearch, setGenreSearch] = useState<string>("");
+    const [genreSearch, setGenreSearch] = useState<string>("*");
 
     useEffect(() => {
         if (queryClient) {
@@ -59,9 +59,23 @@ export function MoviesGrid() {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="*">All</SelectItem>
-                    <SelectItem value="action">Action</SelectItem>
-                    <SelectItem value="aventure">Aventure</SelectItem>
-                    <SelectItem value="sci-fi">Science Fiction</SelectItem>
+                    <SelectItem value="Action">Action</SelectItem>
+                    <SelectItem value="Aventure">Aventure</SelectItem>
+                    <SelectItem value="Animation">Animation</SelectItem>
+                    <SelectItem value="Comedy">Comedy</SelectItem>
+                    <SelectItem value="Crime">Crime</SelectItem>
+                    <SelectItem value="Documentary">Documentary</SelectItem>
+                    <SelectItem value="Drama">Drama</SelectItem>
+                    <SelectItem value="Family">Family</SelectItem>
+                    <SelectItem value="Fantasy">Fantasy</SelectItem>
+                    <SelectItem value="History">History</SelectItem>
+                    <SelectItem value="Horror">Horror</SelectItem>
+                    <SelectItem value="Mystery">Mystery</SelectItem>
+                    <SelectItem value="Romance">Romance</SelectItem>
+                    <SelectItem value="Science Fiction">Science Fiction</SelectItem>
+                    <SelectItem value="TV Movie">TV Movie</SelectItem>
+                    <SelectItem value="Thriller">Thriller</SelectItem>
+                    <SelectItem value="Western">Western</SelectItem>
                 </SelectContent>
             </Select>
         </div>

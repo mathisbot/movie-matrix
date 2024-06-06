@@ -58,6 +58,7 @@ export interface SearchMovieResponse {
 export interface GetPopularMoviesRequest {
   offset: number;
   limit: number;
+  genre: string;
 }
 
 export interface GetPopularMoviesResponse {
@@ -757,7 +758,7 @@ export const SearchMovieResponse = {
 };
 
 function createBaseGetPopularMoviesRequest(): GetPopularMoviesRequest {
-  return { offset: 0, limit: 0 };
+  return { offset: 0, limit: 0, genre: "" };
 }
 
 export const GetPopularMoviesRequest = {
@@ -767,6 +768,9 @@ export const GetPopularMoviesRequest = {
     }
     if (message.limit !== 0) {
       writer.uint32(16).int32(message.limit);
+    }
+    if (message.genre !== "") {
+      writer.uint32(26).string(message.genre);
     }
     return writer;
   },
@@ -792,6 +796,13 @@ export const GetPopularMoviesRequest = {
 
           message.limit = reader.int32();
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.genre = reader.string();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -805,6 +816,7 @@ export const GetPopularMoviesRequest = {
     return {
       offset: isSet(object.offset) ? globalThis.Number(object.offset) : 0,
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      genre: isSet(object.genre) ? globalThis.String(object.genre) : "",
     };
   },
 
@@ -816,6 +828,9 @@ export const GetPopularMoviesRequest = {
     if (message.limit !== 0) {
       obj.limit = Math.round(message.limit);
     }
+    if (message.genre !== "") {
+      obj.genre = message.genre;
+    }
     return obj;
   },
 
@@ -826,6 +841,7 @@ export const GetPopularMoviesRequest = {
     const message = createBaseGetPopularMoviesRequest();
     message.offset = object.offset ?? 0;
     message.limit = object.limit ?? 0;
+    message.genre = object.genre ?? "";
     return message;
   },
 };

@@ -59,6 +59,7 @@ message SearchMovieResponse {
 message GetPopularMoviesRequest {
   int32 offset = 1;
   int32 limit = 2;
+  string genre = 3;
 }
 
 message GetPopularMoviesResponse {

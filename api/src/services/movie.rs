@@ -166,13 +166,18 @@ impl MovieTrait for MovieService {
 
         let movies = sqlx::query!(
             r#"
-                SELECT * FROM movies
-                ORDER BY popularity DESC
+                SELECT DISTINCT movies.*
+                FROM movies
+                JOIN movie_genres ON movies.id = movie_genres.movie_id
+                JOIN genres ON movie_genres.genre_id = genres.id
+                WHERE $3 = '*' OR genres.name = $3
+                ORDER BY movies.popularity DESC
                 LIMIT $1
                 OFFSET $2
-                "#,
+            "#,
             body.limit as i64,
-            body.offset as i64
+            body.offset as i64,
+            body.genre.as_str(),
         )
         .fetch_all(&self.connection)
         .await
