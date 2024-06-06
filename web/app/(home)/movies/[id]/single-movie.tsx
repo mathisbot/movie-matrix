@@ -134,7 +134,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                           </TabsContent>
                           <TabsContent value="casting">
                               <Card className="w-full p-3 bg-white">
-                                  <ul className="grid grid-flow-row w-full">
+                                  <ul className="flex flex-row flex-wrap w-full">
                                       {movie.casting.map((cast, index) => (
                                           <li key={index}>
                                               <CastingCard cast={cast} />
