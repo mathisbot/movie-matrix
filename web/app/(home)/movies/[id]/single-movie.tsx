@@ -27,8 +27,6 @@ function formatDate(dateString: string) {
   return `${parseInt(day, 10)} ${monthName} ${year}`;
 }
 
-// userVote?: number | undefined;
-
 export default function SingleMovie({ movie }: { movie: Movie }) {
   useEffect(() => {
     const handleScroll = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
@@ -21,17 +21,17 @@ export function SearchMovies() {
     return (
         <>
             <div className="flex flex-row align-middle items-center justify-start mb-3">
-            <Input
-                placeholder="Search for a movie"
-                value={searchMoviesQuery}
-                onChange={(e) => {
-                    setSearchMoviesQuery(e.target.value);
-                    refetchSearchedMovies();
-                }}
-                />
-                {isFetching && (
-                <Loader className="mx-5 size-6 animate-spin " />
-                )}
+                <Input
+                    placeholder="Search for a movie"
+                    value={searchMoviesQuery}
+                    onChange={(e) => {
+                        setSearchMoviesQuery(e.target.value);
+                        refetchSearchedMovies();
+                    }}
+                    />
+                    {isFetching && (
+                    <Loader className="mx-5 size-6 animate-spin " />
+                    )}
             </div>
             {searchMoviesQuery &&
                 (!searchedMovies ||

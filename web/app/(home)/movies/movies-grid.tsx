@@ -1,19 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from "lucide-react";
 import { fetchMovies } from "./actions";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function MoviesGrid() {
+    const queryClient = useQueryClient();
+
     const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
         queryKey: ["movies"],
         queryFn: async ({ pageParam = 0 }) => ({
-        data: await fetchMovies({ pageParam }),
-        nextCursor: pageParam + 1,
+            data: await fetchMovies({ pageParam, genreSearch }),
+            nextCursor: pageParam + 1,
         }),
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         initialPageParam: 0,
@@ -37,8 +40,35 @@ export function MoviesGrid() {
         };
     }, [fetchNextPage, isFetchingNextPage]);
 
+    const [genreSearch, setGenreSearch] = useState<string>("");
+
+    const handleGenreChange = (value: string) => {
+        setGenreSearch(value);
+    }
+
+    // useEffect(() => {
+    //     if (queryClient && queryClient.getQueryData(["movies"])) {
+    //         queryClient.setQueryData(["movies"], { pages: [] });
+    //         fetchNextPage();
+    //     }
+    // }, [genreSearch, fetchNextPage, queryClient]);
+
     return (
         <>
+        <div className="mr-2 px-2 space-x-2 flex flex-row align-middl items-center">
+            <p>Filter by{" "}</p>
+            <Select onValueChange={handleGenreChange}>
+                <SelectTrigger className="w-[150px]">
+                    <SelectValue placeholder="Genre..." />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="*">All</SelectItem>
+                    <SelectItem value="action">Action</SelectItem>
+                    <SelectItem value="aventure">Aventure</SelectItem>
+                    <SelectItem value="sci-fi">Science Fiction</SelectItem>
+                </SelectContent>
+            </Select>
+        </div>
         <div className="grid grid-auto sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
             {data?.pages.map((page) =>
             (page.data.movies || []).map((movie) => (
