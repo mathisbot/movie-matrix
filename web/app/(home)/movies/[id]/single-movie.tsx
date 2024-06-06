@@ -104,7 +104,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                           <VoteSlider userVote={movie.userVote? movie.userVote : 5} movieId={movie.id}></VoteSlider>
                       </div>
                       <p className="mb-4 text-lg">
-                          ⭐{movie.voteAverage.toFixed(1)} /10
+                          ⭐ {movie.voteAverage.toFixed(1)} / 10
                       </p>
                       <p className="mb-4 text-lg">
                           🕰️ {convertRuntime(movie.runtime)}
@@ -145,6 +145,24 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                       </Tabs>
                   </div>
               </div>
+          </div>
+          <div id="details" className="relative z-20">
+          <div className="relative mb-10">
+                              <h2 className="text-4xl text-black px-12 mt-8 mb-8">
+                                  <span className="relative z-10">
+                                      You may also like:
+                                  </span>
+                              </h2>
+                              <Card className="w-full p-3 bg-white px-20">
+                                  <ul className="grid grid-flow-row w-full">
+                                      {movie.casting.map((cast, index) => (
+                                          <li key={index}>
+                                              <CastingCard cast={cast} />
+                                          </li>
+                                      ))}
+                                  </ul>
+                              </Card>
+                          </div>
           </div>
       </>
   );
