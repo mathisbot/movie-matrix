@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import React from 'react';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useQuery } from '@tanstack/react-query';
-import { voteMovie } from '../actions';
-import { VoteMovieResponse } from '@/services/movie';
-import { Loader } from 'lucide-react';
+import React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { voteMovie } from "../actions";
+import { VoteMovieResponse } from "@/services/movie";
+import { Loader } from "lucide-react";
 
 const VoteSlider = ({userVote, movieId}: {userVote: number | undefined, movieId: number}) => {
     const [value, setValue] = useState(userVote? userVote : 5);

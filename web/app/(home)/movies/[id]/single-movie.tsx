@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useEffect } from "react";
 import Image from "next/image";
@@ -17,11 +17,21 @@ function convertRuntime(runtime: number) {
 
 function formatDate(dateString: string) {
   const months = [
-    "January", "February", "March", "April", "May", "June", 
-    "July", "August", "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
-  const [year, month, day] = dateString.split('-');
+  const [year, month, day] = dateString.split("-");
   const monthName = months[parseInt(month, 10) - 1];
 
   return `${parseInt(day, 10)} ${monthName} ${year}`;

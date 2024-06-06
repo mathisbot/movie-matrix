@@ -69,7 +69,7 @@ fn vectorize_movie(
 pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
     if fs::metadata("index.bin").is_ok() {
         println!("Index found, loading...");
-        return HNSWIndex::load("../index.bin").unwrap();
+        return HNSWIndex::load("index.bin").unwrap();
     }
 
     let genres_map = build_genres_map(pg_pool.clone()).await;

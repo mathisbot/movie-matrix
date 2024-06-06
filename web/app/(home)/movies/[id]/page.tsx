@@ -7,24 +7,24 @@ export default async function MoviePage({
 }: {
   params: { id: string };
 }) {
-    const parsedId = parseInt(params.id);
+  const parsedId = parseInt(params.id);
 
-    if (isNaN(parsedId)) {
-        return <div>Movie ID not found.</div>;
-    }
+  if (isNaN(parsedId)) {
+    return <div>Movie ID not found.</div>;
+  }
 
-    const { movie } = await movieServiceClient.getMovie(
-        { id: parsedId },
-        getAuthMetadata()
-    );
+  const { movie } = await movieServiceClient.getMovie(
+    { id: parsedId },
+    getAuthMetadata()
+  );
 
-    if (!movie) {
-        return <div>Movie not found.</div>;
-    }
+  if (!movie) {
+    return <div>Movie not found.</div>;
+  }
 
-    return (
-        <QueryProvider>
-            <SingleMovie movie={movie}></SingleMovie>
-        </QueryProvider>
-    );
+  return (
+    <QueryProvider>
+      <SingleMovie movie={movie}></SingleMovie>
+    </QueryProvider>
+  );
 }
