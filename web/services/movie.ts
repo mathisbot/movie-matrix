@@ -55,12 +55,20 @@ export interface SearchMovieResponse {
   movies: MoviePreview[];
 }
 
-export interface GetMoviesRequest {
+export interface GetPopularMoviesRequest {
   offset: number;
   limit: number;
 }
 
-export interface GetMoviesResponse {
+export interface GetPopularMoviesResponse {
+  movies: MoviePreview[];
+}
+
+export interface GetRecommandedMoviesRequest {
+  limit: number;
+}
+
+export interface GetRecommandedMoviesResponse {
   movies: MoviePreview[];
 }
 
@@ -748,12 +756,12 @@ export const SearchMovieResponse = {
   },
 };
 
-function createBaseGetMoviesRequest(): GetMoviesRequest {
+function createBaseGetPopularMoviesRequest(): GetPopularMoviesRequest {
   return { offset: 0, limit: 0 };
 }
 
-export const GetMoviesRequest = {
-  encode(message: GetMoviesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetPopularMoviesRequest = {
+  encode(message: GetPopularMoviesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.offset !== 0) {
       writer.uint32(8).int32(message.offset);
     }
@@ -763,10 +771,10 @@ export const GetMoviesRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetMoviesRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPopularMoviesRequest {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetMoviesRequest();
+    const message = createBaseGetPopularMoviesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -793,14 +801,14 @@ export const GetMoviesRequest = {
     return message;
   },
 
-  fromJSON(object: any): GetMoviesRequest {
+  fromJSON(object: any): GetPopularMoviesRequest {
     return {
       offset: isSet(object.offset) ? globalThis.Number(object.offset) : 0,
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
     };
   },
 
-  toJSON(message: GetMoviesRequest): unknown {
+  toJSON(message: GetPopularMoviesRequest): unknown {
     const obj: any = {};
     if (message.offset !== 0) {
       obj.offset = Math.round(message.offset);
@@ -811,33 +819,33 @@ export const GetMoviesRequest = {
     return obj;
   },
 
-  create(base?: DeepPartial<GetMoviesRequest>): GetMoviesRequest {
-    return GetMoviesRequest.fromPartial(base ?? {});
+  create(base?: DeepPartial<GetPopularMoviesRequest>): GetPopularMoviesRequest {
+    return GetPopularMoviesRequest.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<GetMoviesRequest>): GetMoviesRequest {
-    const message = createBaseGetMoviesRequest();
+  fromPartial(object: DeepPartial<GetPopularMoviesRequest>): GetPopularMoviesRequest {
+    const message = createBaseGetPopularMoviesRequest();
     message.offset = object.offset ?? 0;
     message.limit = object.limit ?? 0;
     return message;
   },
 };
 
-function createBaseGetMoviesResponse(): GetMoviesResponse {
+function createBaseGetPopularMoviesResponse(): GetPopularMoviesResponse {
   return { movies: [] };
 }
 
-export const GetMoviesResponse = {
-  encode(message: GetMoviesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const GetPopularMoviesResponse = {
+  encode(message: GetPopularMoviesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.movies) {
       MoviePreview.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): GetMoviesResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPopularMoviesResponse {
     const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetMoviesResponse();
+    const message = createBaseGetPopularMoviesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -857,13 +865,13 @@ export const GetMoviesResponse = {
     return message;
   },
 
-  fromJSON(object: any): GetMoviesResponse {
+  fromJSON(object: any): GetPopularMoviesResponse {
     return {
       movies: globalThis.Array.isArray(object?.movies) ? object.movies.map((e: any) => MoviePreview.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: GetMoviesResponse): unknown {
+  toJSON(message: GetPopularMoviesResponse): unknown {
     const obj: any = {};
     if (message.movies?.length) {
       obj.movies = message.movies.map((e) => MoviePreview.toJSON(e));
@@ -871,11 +879,127 @@ export const GetMoviesResponse = {
     return obj;
   },
 
-  create(base?: DeepPartial<GetMoviesResponse>): GetMoviesResponse {
-    return GetMoviesResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<GetPopularMoviesResponse>): GetPopularMoviesResponse {
+    return GetPopularMoviesResponse.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<GetMoviesResponse>): GetMoviesResponse {
-    const message = createBaseGetMoviesResponse();
+  fromPartial(object: DeepPartial<GetPopularMoviesResponse>): GetPopularMoviesResponse {
+    const message = createBaseGetPopularMoviesResponse();
+    message.movies = object.movies?.map((e) => MoviePreview.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetRecommandedMoviesRequest(): GetRecommandedMoviesRequest {
+  return { limit: 0 };
+}
+
+export const GetRecommandedMoviesRequest = {
+  encode(message: GetRecommandedMoviesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.limit !== 0) {
+      writer.uint32(8).int32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRecommandedMoviesRequest {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRecommandedMoviesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.limit = reader.int32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRecommandedMoviesRequest {
+    return { limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0 };
+  },
+
+  toJSON(message: GetRecommandedMoviesRequest): unknown {
+    const obj: any = {};
+    if (message.limit !== 0) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetRecommandedMoviesRequest>): GetRecommandedMoviesRequest {
+    return GetRecommandedMoviesRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetRecommandedMoviesRequest>): GetRecommandedMoviesRequest {
+    const message = createBaseGetRecommandedMoviesRequest();
+    message.limit = object.limit ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetRecommandedMoviesResponse(): GetRecommandedMoviesResponse {
+  return { movies: [] };
+}
+
+export const GetRecommandedMoviesResponse = {
+  encode(message: GetRecommandedMoviesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.movies) {
+      MoviePreview.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetRecommandedMoviesResponse {
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetRecommandedMoviesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.movies.push(MoviePreview.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetRecommandedMoviesResponse {
+    return {
+      movies: globalThis.Array.isArray(object?.movies) ? object.movies.map((e: any) => MoviePreview.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: GetRecommandedMoviesResponse): unknown {
+    const obj: any = {};
+    if (message.movies?.length) {
+      obj.movies = message.movies.map((e) => MoviePreview.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetRecommandedMoviesResponse>): GetRecommandedMoviesResponse {
+    return GetRecommandedMoviesResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetRecommandedMoviesResponse>): GetRecommandedMoviesResponse {
+    const message = createBaseGetRecommandedMoviesResponse();
     message.movies = object.movies?.map((e) => MoviePreview.fromPartial(e)) || [];
     return message;
   },
@@ -1019,11 +1143,19 @@ export const MovieServiceDefinition = {
       responseStream: false,
       options: {},
     },
-    getMovies: {
-      name: "GetMovies",
-      requestType: GetMoviesRequest,
+    getPopularMovies: {
+      name: "GetPopularMovies",
+      requestType: GetPopularMoviesRequest,
       requestStream: false,
-      responseType: GetMoviesResponse,
+      responseType: GetPopularMoviesResponse,
+      responseStream: false,
+      options: {},
+    },
+    getRecommandedMovies: {
+      name: "GetRecommandedMovies",
+      requestType: GetRecommandedMoviesRequest,
+      requestStream: false,
+      responseType: GetRecommandedMoviesResponse,
       responseStream: false,
       options: {},
     },
@@ -1044,7 +1176,14 @@ export interface MovieServiceImplementation<CallContextExt = {}> {
     request: SearchMovieRequest,
     context: CallContext & CallContextExt,
   ): Promise<DeepPartial<SearchMovieResponse>>;
-  getMovies(request: GetMoviesRequest, context: CallContext & CallContextExt): Promise<DeepPartial<GetMoviesResponse>>;
+  getPopularMovies(
+    request: GetPopularMoviesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<GetPopularMoviesResponse>>;
+  getRecommandedMovies(
+    request: GetRecommandedMoviesRequest,
+    context: CallContext & CallContextExt,
+  ): Promise<DeepPartial<GetRecommandedMoviesResponse>>;
   voteMovie(request: VoteMovieRequest, context: CallContext & CallContextExt): Promise<DeepPartial<VoteMovieResponse>>;
 }
 
@@ -1054,7 +1193,14 @@ export interface MovieServiceClient<CallOptionsExt = {}> {
     request: DeepPartial<SearchMovieRequest>,
     options?: CallOptions & CallOptionsExt,
   ): Promise<SearchMovieResponse>;
-  getMovies(request: DeepPartial<GetMoviesRequest>, options?: CallOptions & CallOptionsExt): Promise<GetMoviesResponse>;
+  getPopularMovies(
+    request: DeepPartial<GetPopularMoviesRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetPopularMoviesResponse>;
+  getRecommandedMovies(
+    request: DeepPartial<GetRecommandedMoviesRequest>,
+    options?: CallOptions & CallOptionsExt,
+  ): Promise<GetRecommandedMoviesResponse>;
   voteMovie(request: DeepPartial<VoteMovieRequest>, options?: CallOptions & CallOptionsExt): Promise<VoteMovieResponse>;
 }
 
