@@ -27,3 +27,7 @@ export const voteMovie = async (movieId: number, vote: number) => {
   const request = { movieId, vote };
   return await movieServiceClient.voteMovie(request, getAuthMetadata());
 };
+
+export async function fetchRecommendedMovies(limit: number) {
+  return await movieServiceClient.getRecommandedMovies({ limit }, getAuthMetadata());
+}

@@ -11,10 +11,6 @@ import { Loader } from "lucide-react";
 const VoteSlider = ({userVote, movieId}: {userVote: number | undefined, movieId: number}) => {
     const [value, setValue] = useState(userVote? userVote : 5);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(parseInt(e.target.value));
-    }
-
     const adjectiveMap = [
         "Appalling",
         "Horrible",
@@ -56,7 +52,7 @@ const VoteSlider = ({userVote, movieId}: {userVote: number | undefined, movieId:
                         max="10"
                         step="1"
                         value={value}
-                        onChange={handleChange}
+                        onChange={(e) => setValue(parseInt(e.target.value))}
                         className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer dark:bg-black"
                     />
                 </div>
