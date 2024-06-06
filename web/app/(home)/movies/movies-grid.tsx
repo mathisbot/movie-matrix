@@ -15,7 +15,7 @@ export function MoviesGrid() {
     const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
         queryKey: ["movies"],
         queryFn: async ({ pageParam = 0 }) => ({
-            data: await fetchMovies({ pageParam, genreSearch }),
+            data: await fetchMovies({ pageParam }),
             nextCursor: pageParam + 1,
         }),
         getNextPageParam: (lastPage) => lastPage.nextCursor,

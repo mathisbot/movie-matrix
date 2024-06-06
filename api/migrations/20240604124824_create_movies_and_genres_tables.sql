@@ -2,6 +2,7 @@
 CREATE TABLE movies (
    id integer PRIMARY KEY,
    adult boolean NOT NULL,
+   overview text NOT NULL,
    original_language text NOT NULL,
    original_title text NOT NULL,
    backdrop_path text,
@@ -11,7 +12,8 @@ CREATE TABLE movies (
    title text NOT NULL,
    video boolean NOT NULL,
    vote_average real NOT NULL,
-   vote_count integer NOT NULL
+   vote_count integer NOT NULL,
+   embedding text
 );
 
 CREATE TABLE genres (

@@ -100,10 +100,10 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                       <h2 className="mb-4 text-3xl">{movie.title}</h2>
                       <div className="mb-4 ml-8">
                           <p>Already watched ? Tell us how you liked it:</p>
-                          <VoteSlider userVote={movie.userVote? movie.userVote : 5} movieId={movie.id}></VoteSlider>
+                          <VoteSlider userVote={movie.userVote} movieId={movie.id}></VoteSlider>
                       </div>
                       <p className="mb-4 text-lg">
-                          ⭐{movie.voteAverage.toFixed(1)} /10
+                          ⭐ {movie.voteAverage.toFixed(1)} / 10
                       </p>
                       <p className="mb-4 text-lg">
                           🕰️ {convertRuntime(movie.runtime)}
@@ -131,14 +131,14 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                               </Card>
                           </TabsContent>
                           <TabsContent value="casting">
-                              <Card className="w-full p-3 bg-white">
-                                  <ul className="flex flex-row flex-wrap w-full">
-                                      {movie.casting.map((cast, index) => (
-                                          <li key={index}>
-                                              <CastingCard cast={cast} />
-                                          </li>
-                                      ))}
-                                  </ul>
+                              <Card className="max-w-[75%] p-5 bg-white">
+                                    <ul className="flex w- overflow-x-auto whitespace-nowrap">
+                                        {movie.casting.map((cast, index) => (
+                                            <li key={index}>
+                                                <CastingCard cast={cast} />
+                                            </li>
+                                        ))}
+                                    </ul>
                               </Card>
                           </TabsContent>
                       </Tabs>
