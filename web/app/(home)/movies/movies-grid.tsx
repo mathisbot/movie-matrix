@@ -60,7 +60,6 @@ export function MoviesGrid() {
                 <SelectContent>
                     <SelectItem value="*">All</SelectItem>
                     <SelectItem value="Action">Action</SelectItem>
-                    <SelectItem value="Aventure">Aventure</SelectItem>
                     <SelectItem value="Animation">Animation</SelectItem>
                     <SelectItem value="Comedy">Comedy</SelectItem>
                     <SelectItem value="Crime">Crime</SelectItem>

@@ -15,7 +15,7 @@ export async function fetchMovies({ pageParam = 0, genre = "*" } : { pageParam?:
 }
 
 export const fetchSearchedMovies = async (query: string) => {
-  const limit = 20;
+  const limit = 15;
 
   return await movieServiceClient.searchMovie(
     { query, limit },

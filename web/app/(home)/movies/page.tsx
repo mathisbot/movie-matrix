@@ -5,7 +5,7 @@ import { QueryProvider } from "@/components/query-provider";
 import { fetchRecommendedMovies } from "./actions";
 import { GetRecommandedMoviesResponse } from "@/services/movie";
 
-const recommendationLimit = 10;
+const recommendationLimit = 20;
 
 export default async function MoviesPage() {
     const recommendedMovies: GetRecommandedMoviesResponse = await fetchRecommendedMovies(recommendationLimit);

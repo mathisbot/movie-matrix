@@ -53,7 +53,7 @@ const VoteSlider = ({userVote, movieId}: {userVote: number | undefined, movieId:
                         step="1"
                         value={value}
                         onChange={(e) => setValue(parseInt(e.target.value))}
-                        className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer dark:bg-black"
+                        className="w-full h-2 bg-gray-300 rounded-full appearance-none cursor-pointer dark:bg-black"
                     />
                 </div>
                 <Button onClick={handleClick}>

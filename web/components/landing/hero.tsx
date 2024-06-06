@@ -28,7 +28,7 @@ export async function Hero() {
         </main>
 
         <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-          Choose the next film you will watch effortlessly with MovieMatrix.
+        Effortlessly select the next movie you want to watch with MovieMatrix.
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4">
