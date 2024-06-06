@@ -11,7 +11,7 @@ import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "movie";
 
 export interface Cast {
-  id: string;
+  id: number;
   name: string;
   role: string;
   profileUrl: string;
@@ -73,13 +73,13 @@ export interface VoteMovieResponse {
 }
 
 function createBaseCast(): Cast {
-  return { id: "", name: "", role: "", profileUrl: "" };
+  return { id: 0, name: "", role: "", profileUrl: "" };
 }
 
 export const Cast = {
   encode(message: Cast, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
@@ -101,11 +101,11 @@ export const Cast = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if (tag !== 10) {
+          if (tag !== 8) {
             break;
           }
 
-          message.id = reader.string();
+          message.id = reader.int32();
           continue;
         case 2:
           if (tag !== 18) {
@@ -139,7 +139,7 @@ export const Cast = {
 
   fromJSON(object: any): Cast {
     return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      id: isSet(object.id) ? globalThis.Number(object.id) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       role: isSet(object.role) ? globalThis.String(object.role) : "",
       profileUrl: isSet(object.profileUrl) ? globalThis.String(object.profileUrl) : "",
@@ -148,8 +148,8 @@ export const Cast = {
 
   toJSON(message: Cast): unknown {
     const obj: any = {};
-    if (message.id !== "") {
-      obj.id = message.id;
+    if (message.id !== 0) {
+      obj.id = Math.round(message.id);
     }
     if (message.name !== "") {
       obj.name = message.name;
@@ -168,7 +168,7 @@ export const Cast = {
   },
   fromPartial(object: DeepPartial<Cast>): Cast {
     const message = createBaseCast();
-    message.id = object.id ?? "";
+    message.id = object.id ?? 0;
     message.name = object.name ?? "";
     message.role = object.role ?? "";
     message.profileUrl = object.profileUrl ?? "";

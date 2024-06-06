@@ -75,7 +75,8 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                               </p>
                           </div>
                         <Link
-                            href="#details"
+                            id="details-link"
+                            href="#details-link"
                             className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
                             >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -133,7 +134,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                           </TabsContent>
                           <TabsContent value="casting">
                               <Card className="w-full p-3 bg-white">
-                                  <ul className="grid grid-flow-row w-full">
+                                  <ul className="flex flex-row flex-wrap w-full">
                                       {movie.casting.map((cast, index) => (
                                           <li key={index}>
                                               <CastingCard cast={cast} />
