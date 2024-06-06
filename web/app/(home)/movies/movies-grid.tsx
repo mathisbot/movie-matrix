@@ -42,22 +42,18 @@ export function MoviesGrid() {
 
     const [genreSearch, setGenreSearch] = useState<string>("");
 
-    const handleGenreChange = (value: string) => {
-        setGenreSearch(value);
-    }
-
-    // useEffect(() => {
-    //     if (queryClient && queryClient.getQueryData(["movies"])) {
-    //         queryClient.setQueryData(["movies"], { pages: [] });
-    //         fetchNextPage();
-    //     }
-    // }, [genreSearch, fetchNextPage, queryClient]);
+    useEffect(() => {
+        if (queryClient) {
+            queryClient.removeQueries({queryKey: ["movies"]});
+            fetchNextPage();
+        }
+    }, [genreSearch, queryClient, fetchNextPage]);
 
     return (
         <>
-        <div className="mr-2 px-2 space-x-2 flex flex-row align-middl items-center">
+        <div className="m-3 px-2 space-x-2 flex flex-row align-middl items-center">
             <p>Filter by{" "}</p>
-            <Select onValueChange={handleGenreChange}>
+            <Select onValueChange={(v) => setGenreSearch(v)}>
                 <SelectTrigger className="w-[150px]">
                     <SelectValue placeholder="Genre..." />
                 </SelectTrigger>
