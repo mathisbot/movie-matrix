@@ -242,6 +242,8 @@ impl MovieTrait for MovieService {
 
         let body = request.into_inner();
 
+        println!("{:?}", body);
+
         sqlx::query!(
             r#"
             INSERT INTO ratings (user_id, movie_id, rating)
