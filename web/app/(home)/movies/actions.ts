@@ -23,8 +23,8 @@ export const fetchSearchedMovies = async (query: string) => {
     );
 };
 
-export const voteMovie = async (id: number, vote: number) => {
-    const request = { id, vote };
+export const voteMovie = async (movieId: number, vote: number) => {
+    const request = { movieId, vote };
     return await movieServiceClient.voteMovie(
         request,
         getAuthMetadata()

@@ -5,13 +5,40 @@ use crate::configuration::Settings;
 use crate::proto::movie_service_server::MovieService as MovieTrait;
 use crate::proto::{
     GetMovieRequest, GetMovieResponse, GetMoviesRequest, GetMoviesResponse, SearchMovieRequest,
-    SearchMovieResponse,
+    SearchMovieResponse, Cast
 };
 use crate::recommander::{build_index, predict};
+
+const MAX_CAST_SIZE: usize = 7;
 
 #[derive(serde::Deserialize)]
 struct Genre {
     name: String,
+}
+
+
+#[allow(dead_code)]
+#[derive(serde::Deserialize)]
+struct CastResponse {
+    adult: bool,
+    gender: i32,
+    id: i32,
+    known_for_department: String,
+    name: String,
+    original_name: String,
+    popularity: f32,
+    profile_path: Option<String>,
+    cast_id: i32,
+    character: String,
+    credit_id: String,
+    order: i32,
+}
+
+#[allow(dead_code)]
+#[derive(serde::Deserialize)]
+struct Credits {
+    id: i32,
+    cast: Vec<CastResponse>,
 }
 
 #[derive(serde::Deserialize)]
@@ -70,6 +97,29 @@ impl MovieTrait for MovieService {
             .await
             .map_err(|_| tonic::Status::internal("Failed to parse movie"))?;
 
+        let credits: Credits = reqwest::Client::new()
+            .get(&format!(
+                "{}/movie/{}/credits",
+                self.configuration.the_movie_db.base_url, body.id
+            ))
+            .bearer_auth(&self.configuration.the_movie_db.api_key)
+            .send()
+            .await
+            .map_err(|_| tonic::Status::internal("Failed to fetch movie credits"))?
+            .json()
+            .await
+            .map_err(|_| tonic::Status::internal("Failed to parse movie credits"))?;
+
+        let casting = credits.cast.into_iter().take(MAX_CAST_SIZE).map(|cast| Cast {
+            id: cast.id,
+            name: cast.name,
+            role: cast.character,
+            profile_url: match cast.profile_path {
+                Some(text) => format!("https://image.tmdb.org/t/p/w500/{}", text),
+                None => "".to_string(),
+            },
+        }).collect();
+
         let user_rating = sqlx::query!(
             r#"
             SELECT rating FROM ratings
@@ -96,7 +146,7 @@ impl MovieTrait for MovieService {
             release_date: movie.release_date,
             runtime: movie.runtime,
             vote_average: movie.vote_average,
-            casting: vec![],
+            casting: casting,
             genres: movie.genres.into_iter().map(|genre| genre.name).collect(),
             user_vote: user_rating,
         };
@@ -234,6 +284,8 @@ impl MovieTrait for MovieService {
         let user_id = extract_user_id(&request);
 
         let body = request.into_inner();
+
+        println!("{:?}", body);
 
         sqlx::query!(
             r#"
