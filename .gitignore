@@ -17,6 +17,9 @@ out/
 build
 target
 
+# index binary
+index.bin
+
 # misc
 .DS_Store
 *.pem

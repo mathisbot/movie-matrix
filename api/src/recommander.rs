@@ -1,7 +1,10 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fs};
 
 use hora::{
-    core::{ann_index::ANNIndex, metrics::Metric},
+    core::{
+        ann_index::{ANNIndex, SerializableIndex},
+        metrics::Metric,
+    },
     index::{hnsw_idx::HNSWIndex, hnsw_params::HNSWParams},
 };
 use rust_bert::pipelines::sentence_embeddings::{
@@ -64,6 +67,11 @@ fn vectorize_movie(
 }
 
 pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
+    if fs::metadata("index.bin").is_ok() {
+        println!("Index found, loading...");
+        return HNSWIndex::load("../index.bin").unwrap();
+    }
+
     let genres_map = build_genres_map(pg_pool.clone()).await;
 
     let dimension = genres_map.len() + 1 + 384;
@@ -104,11 +112,6 @@ pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
     let mut index = HNSWIndex::<f32, i32>::new(dimension, &HNSWParams::<f32>::default());
 
     for vectorize_movie in vectorized_movies.iter() {
-        println!(
-            "Adding movie {} with dimension {}",
-            vectorize_movie.id,
-            vectorize_movie.vector.len()
-        );
         index
             .add(&vectorize_movie.vector, vectorize_movie.id)
             .expect("Failed to add movie to index");
@@ -128,9 +131,11 @@ pub async fn build_index(pg_pool: &PgPool) -> HNSWIndex<f32, i32> {
         .expect("Failed to insert movie vector");
     }
 
-    index.build(Metric::DotProduct).unwrap();
+    index.build(Metric::Angular).unwrap();
 
     println!("Index built!");
+
+    index.dump("index.bin").unwrap();
 
     index
 }
@@ -169,8 +174,7 @@ pub async fn predict(
             let vector: Vec<f32> = serde_json::from_str(&movie.embedding.clone().unwrap()).unwrap();
 
             for (index, value) in vector.iter().enumerate() {
-                acc[index] +=
-                    value * (movie.rating - movie.vote_average) / user_rated_movies.len() as f32
+                acc[index] += value * movie.rating / user_rated_movies.len() as f32
             }
 
             acc
