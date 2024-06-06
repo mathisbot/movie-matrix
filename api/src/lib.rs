@@ -1,7 +1,7 @@
 pub mod configuration;
 pub mod domain;
 pub mod interceptor;
-pub mod predictions;
+pub mod recommander;
 pub mod services;
 pub mod startup;
 pub mod tasks;

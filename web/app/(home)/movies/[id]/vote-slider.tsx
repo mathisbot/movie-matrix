@@ -15,6 +15,19 @@ const VoteSlider = ({userVote, movieId}: {userVote: number, movieId: number}) =>
         setValue(parseInt(e.target.value));
     }
 
+    const adjectiveMap = {
+        1: "Appalling",
+        2: "Horrible",
+        3: "Very Bad",
+        4: "Bad",
+        5: "Average",
+        6: "Fine",
+        7: "Good",
+        8: "Very good",
+        9: "Great",
+        10: "Masterpiece"
+      };
+    
     const { data: vote, refetch: reVote, isFetching: isVoting, isFetched: isVoted } = useQuery({
         queryKey: ["search-movies"],
         queryFn: async () => (await voteMovie(movieId, value) as VoteMovieResponse),
@@ -40,6 +53,7 @@ const VoteSlider = ({userVote, movieId}: {userVote: number, movieId: number}) =>
                     onChange={handleChange}
                     className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer dark:bg-black"
                 />
+                <p className="text-center">{adjectiveMap[value]}</p>
             </div>
             <Button onClick={handleClick}>
                 {isVoting ? (

@@ -26,6 +26,7 @@ struct Movie {
     genre_ids: Vec<i32>,
     vote_average: f32,
     vote_count: i32,
+    overview: String,
 }
 
 #[derive(serde::Deserialize)]
@@ -101,10 +102,10 @@ pub async fn fetch_movies(configuration: Settings, pages_to_fetch: i32) {
 
         for movie in response.results {
             sqlx::query!(
-                r#"INSERT INTO movies (id, adult, original_language, original_title, popularity, poster_path, backdrop_path, release_date, title, video, vote_average, vote_count)
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                r#"INSERT INTO movies (id, adult, original_language, original_title, popularity, poster_path, backdrop_path, release_date, title, video, vote_average, vote_count, overview)
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                 ON CONFLICT (id) DO UPDATE
-                SET adult = $2, original_language = $3, original_title = $4, popularity = $5, poster_path = $6, backdrop_path = $7, release_date = $8, title = $9, video = $10, vote_average = $11, vote_count = $12
+                SET adult = $2, original_language = $3, original_title = $4, popularity = $5, poster_path = $6, backdrop_path = $7, release_date = $8, title = $9, video = $10, vote_average = $11, vote_count = $12, overview = $13
                 "#,
                 movie.id,
                 movie.adult,
@@ -117,7 +118,8 @@ pub async fn fetch_movies(configuration: Settings, pages_to_fetch: i32) {
                 movie.title,
                 movie.video,
                 movie.vote_average,
-                movie.vote_count
+                movie.vote_count,
+                movie.overview
             ).execute(&db_pool).await.expect("Failed to insert movie.");
 
             for genre_id in movie.genre_ids {
