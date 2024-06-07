@@ -8,6 +8,7 @@ service MovieService {
   rpc GetPopularMovies(GetPopularMoviesRequest) returns (GetPopularMoviesResponse);
   rpc GetRecommandedMovies(GetRecommandedMoviesRequest) returns (GetRecommandedMoviesResponse);
   rpc VoteMovie(VoteMovieRequest) returns (VoteMovieResponse);
+  rpc GetSimilarMovies(GetSimilarMoviesRequest) returns (GetSimilarMoviesResponse);
 }
 
 message Cast {
@@ -80,3 +81,12 @@ message VoteMovieRequest {
 }
 
 message VoteMovieResponse {}
+
+message GetSimilarMoviesRequest {
+  int32 movie_id = 1;
+  int32 limit = 2;
+}
+
+message GetSimilarMoviesResponse {
+  repeated MoviePreview movies = 1;
+}

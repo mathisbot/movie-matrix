@@ -1,3 +1,4 @@
+use hora::core::ann_index::ANNIndex;
 use hora::index::hnsw_idx::HNSWIndex;
 use sqlx::PgPool;
 
@@ -5,8 +6,8 @@ use crate::configuration::Settings;
 use crate::proto::movie_service_server::MovieService as MovieTrait;
 use crate::proto::{
     Cast, GetMovieRequest, GetMovieResponse, GetPopularMoviesRequest, GetPopularMoviesResponse,
-    GetRecommandedMoviesRequest, GetRecommandedMoviesResponse, SearchMovieRequest,
-    SearchMovieResponse,
+    GetRecommandedMoviesRequest, GetRecommandedMoviesResponse, GetSimilarMoviesResponse,
+    SearchMovieRequest, SearchMovieResponse,
 };
 use crate::recommander::{build_index, predict};
 
@@ -312,6 +313,62 @@ impl MovieTrait for MovieService {
         })?;
 
         Ok(tonic::Response::new(crate::proto::VoteMovieResponse {}))
+    }
+
+    async fn get_similar_movies(
+        &self,
+        request: tonic::Request<crate::proto::GetSimilarMoviesRequest>,
+    ) -> Result<tonic::Response<crate::proto::GetSimilarMoviesResponse>, tonic::Status> {
+        let body = request.into_inner();
+
+        let movie_embedding = sqlx::query!(
+            r#"
+            SELECT embedding FROM movies
+            WHERE id = $1
+            "#,
+            body.movie_id
+        )
+        .fetch_one(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch movie vector"))?
+        .embedding;
+
+        let movie_vector: Vec<f32> =
+            serde_json::from_str(&movie_embedding.clone().unwrap()).unwrap();
+
+        let similar_movies = self
+            .index
+            .search(&movie_vector, body.limit.try_into().unwrap());
+
+        let mut movies = sqlx::query!(
+            r#"
+                    SELECT * FROM movies
+                    WHERE id = ANY($1)
+                    "#,
+            similar_movies.as_slice()
+        )
+        .fetch_all(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch movies"))?;
+
+        // sort movies by the order of the recommended_movies
+        movies.sort_by_key(|movie| similar_movies.iter().position(|id| *id == movie.id));
+
+        let poster_base_url = "https://image.tmdb.org/t/p/w500/";
+
+        let movies: Vec<crate::proto::MoviePreview> = movies
+            .into_iter()
+            .map(|movie| crate::proto::MoviePreview {
+                id: movie.id,
+                title: movie.title,
+                poster_url: movie
+                    .poster_path
+                    .map(|text| format!("{}{}", poster_base_url, text)),
+                vote_average: movie.vote_average,
+            })
+            .collect();
+
+        return Ok(tonic::Response::new(GetSimilarMoviesResponse { movies }));
     }
 }
 
