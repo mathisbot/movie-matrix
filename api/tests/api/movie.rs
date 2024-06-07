@@ -99,6 +99,7 @@ async fn vote_movie_works() {
     let mut request = Request::new(GetPopularMoviesRequest {
         limit: 1,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
