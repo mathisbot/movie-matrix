@@ -51,9 +51,9 @@ const VoteSlider = ({userVote, movieId}: {userVote: number, movieId: number}) =>
                     step="1"
                     value={value}
                     onChange={handleChange}
-                    className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer dark:bg-black"
+                    className="w-full m-0 h-2 bg-gray-300 rounded-full appearance-none cursor-pointer dark:bg-black"
                 />
-                <p className="text-center">{adjectiveMap[value]}</p>
+                <p className="w-full text-center">{adjectiveMap[value]}</p>
             </div>
             <Button onClick={handleClick}>
                 {isVoting ? (

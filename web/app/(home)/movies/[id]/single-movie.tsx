@@ -36,6 +36,11 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
       if (parallax) {
         const scrolled = window.scrollY;
         parallax.style.transform = `translateY(${scrolled * 0.65 - 35}px)`;
+        const shadow = document.getElementById("shadow");
+        if (shadow) {
+            const scrolled = window.scrollY;
+            const opacity = Math.min(scrolled / 500, 1);
+            shadow.style.opacity = opacity.toString();
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -68,7 +73,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                                   </span>
                               </h2>
                               <p className="relative px-10 text-white text-lg">
-                                  Rating: {movie.voteAverage.toFixed(1)} /10
+                                  Rating: {movie.voteAverage.toFixed(1)} / 10
                               </p>
                               <p className="relative px-10 text-white text-lg">
                                   Duration: {convertRuntime(movie.runtime)}
@@ -87,7 +92,7 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                   </div>
               </div>
           </div>
-          <div id="details" className="relative z-20 bg-gray-100">
+          <div id="details" className="relative z-20 transition-opacity duration-300">
               <div className="flex rounded-xl flex-row p-5 justify-between items-center align-middle">
                   {movie.posterUrl && (
                       <Image
@@ -154,15 +159,6 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                                       You may also like:
                                   </span>
                               </h2>
-                              <Card className="w-full p-3 bg-white px-20">
-                                  <ul className="grid grid-flow-row w-full">
-                                      {movie.casting.map((cast, index) => (
-                                          <li key={index}>
-                                              <CastingCard cast={cast} />
-                                          </li>
-                                      ))}
-                                  </ul>
-                              </Card>
                           </div>
           </div>
       </>
