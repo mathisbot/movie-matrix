@@ -21,11 +21,11 @@ interface RouteProps {
   label: string;
 }
 
-export const Navbar = async ({
+export function Navbar({
   user,
 }: {
   user: { username: string } | null;
-}) => {
+}) {
   const routeList: RouteProps[] = [
     {
       href: "/#about",
@@ -108,9 +108,7 @@ export const Navbar = async ({
               key={i}
               className="px-2 flex items-center justify-center"
             >
-              {/* <Button className="ps-3"> */}
               {route.label}
-              {/* </Button> */}
             </Link>
           ))}
 
