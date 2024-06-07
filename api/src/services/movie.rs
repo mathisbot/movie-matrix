@@ -336,16 +336,21 @@ impl MovieTrait for MovieService {
         let movie_vector: Vec<f32> =
             serde_json::from_str(&movie_embedding.clone().unwrap()).unwrap();
 
-        let similar_movies = self
+        let mut similar_movies = self
             .index
-            .search(&movie_vector, body.limit.try_into().unwrap());
+            .search(&movie_vector, (body.limit+1).try_into().unwrap());
+
+        similar_movies.retain(|id| *id != body.movie_id);
+
+        let similar_movies: Vec<_> = similar_movies.into_iter().take(body.limit as usize).collect();
 
         let mut movies = sqlx::query!(
             r#"
                     SELECT * FROM movies
-                    WHERE id = ANY($1)
+                    WHERE id = ANY($1) AND id != $2
                     "#,
-            similar_movies.as_slice()
+            similar_movies.as_slice(),
+            body.movie_id
         )
         .fetch_all(&self.connection)
         .await
