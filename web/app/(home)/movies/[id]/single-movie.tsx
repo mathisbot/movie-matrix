@@ -82,35 +82,51 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                                   Duration: {convertRuntime(movie.runtime)}
                               </p>
                           </div>
-                        <Link
-                            id="details-link"
-                            href="#details-link"
-                            className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
-                            >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </Link>
+                          <Link
+                              id="details-link"
+                              href="#details-link"
+                              className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-black text-white p-4 rounded-full shadow-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                          >
+                              <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                              >
+                                  <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M19 9l-7 7-7-7"
+                                  />
+                              </svg>
+                          </Link>
                       </div>
                   </div>
               </div>
           </div>
           <div id="details" className="relative z-20 bg-gray-100">
-              <div className="flex rounded-xl flex-row p-5 justify-between items-center align-middle">
-                  {movie.posterUrl && (
-                      <Image
-                          src={movie.posterUrl}
-                          alt={movie.title}
-                          className="mb-4 rounded-xl"
-                          width="350"
-                          height="525"
-                      />
-                  )}
+              <div className="flex rounded-xl flex-row p-5 justify-between align-middle">
+                  <div>
+                      {movie.posterUrl && (
+                          <Image
+                              src={movie.posterUrl}
+                              alt={movie.title}
+                              className="mb-4 rounded-xl sticky top-20"
+                              width="350"
+                              height="525"
+                          />
+                      )}
+                  </div>
                   <div className="ml-2 p-4 h-full w-full">
                       <h2 className="mb-4 text-3xl">{movie.title}</h2>
-                      <div className="mb-4 ml-8">
+                      <div className="mb-4">
                           <p>Already watched ? Tell us how you liked it:</p>
-                          <VoteSlider userVote={movie.userVote} movieId={movie.id}></VoteSlider>
+                          <VoteSlider
+                              userVote={movie.userVote}
+                              movieId={movie.id}
+                          ></VoteSlider>
                       </div>
                       <p className="mb-4 text-lg">
                           ⭐ {movie.voteAverage.toFixed(1)} / 10
@@ -125,33 +141,30 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                           🎬 {movie.genres.join(", ")}
                       </p>
                       <Tabs defaultValue="synopsis">
-                          <TabsList>
-                              <TabsTrigger value="synopsis">
-                                  📖 Synopsis
-                              </TabsTrigger>
-                              <TabsTrigger value="casting">
-                                  🙋 Casting
-                              </TabsTrigger>
-                          </TabsList>
-                          <TabsContent value="synopsis" className="max-w-full">
-                              <Card className="w-full p-3 bg-white">
-                                  <p className="mb-4 text-justify">
-                                      {movie.overview}
-                                  </p>
-                              </Card>
-                          </TabsContent>
-                          <TabsContent value="casting" className="max-w-[75%]">
-                              <Card className="p-5 bg-white">
-                                    <ul className="flex overflow-x-auto whitespace-nowrap">
-                                        {movie.casting.map((cast, index) => (
-                                            <li key={index}>
-                                                <CastingCard cast={cast} />
-                                            </li>
-                                        ))}
-                                    </ul>
-                              </Card>
-                          </TabsContent>
-                      </Tabs>
+                        <TabsList>
+                            <TabsTrigger value="synopsis">📖 Synopsis</TabsTrigger>
+                            <TabsTrigger value="casting">🙋 Casting</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="synopsis" className="max-w-full">
+                            <Card className="w-full p-3 ">
+                            <p className="mb-4 text-justify">{movie.overview}</p>
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="casting">
+                            <Card className="w-full p-3">
+                            <ul className="grid grid-cols-8">
+                                {movie.casting
+                                .filter((v) => v.profileUrl)
+                                .slice(0, 16)
+                                .map((cast, index) => (
+                                    <li key={index}>
+                                    <CastingCard cast={cast} />
+                                    </li>
+                                ))}
+                            </ul>
+                            </Card>
+                        </TabsContent>
+                        </Tabs>
                   </div>
               </div>
           </div>
