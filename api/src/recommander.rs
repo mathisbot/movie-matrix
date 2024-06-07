@@ -48,7 +48,7 @@ fn vectorize_movie(
 ) -> Vec<f32> {
     let mut vector = vec![0.0; genres_map.len() + 1];
 
-    vector[0] = movie.popularity;
+    vector[0] = (movie.popularity + 1.0).log10();
 
     if movie.genres.is_some() {
         for genre in movie.genres.as_ref().unwrap() {
@@ -58,6 +58,10 @@ fn vectorize_movie(
                 panic!("Genre not found in genres map")
             }
         }
+    }
+
+    for i in 1..genres_map.len() + 1 {
+        vector[i] = (vector[i] - 0.5) * 5.0
     }
 
     let embedding = model.encode(&[movie.overview.clone()]).unwrap();
@@ -165,7 +169,9 @@ pub async fn predict(
     .await
     .expect("Failed to fetch user rated movies");
 
-    let user_vector = user_rated_movies
+    let mut sum = 0.0 as f32;
+
+    let mut user_vector = user_rated_movies
         .iter()
         .fold(vec![0.0; dimension], |mut acc, movie| {
             if movie.embedding.is_none() {
@@ -174,12 +180,23 @@ pub async fn predict(
 
             let vector: Vec<f32> = serde_json::from_str(&movie.embedding.clone().unwrap()).unwrap();
 
+            let coeff = (movie.rating - 5.0) / 5.0;
+            sum += coeff.abs();
+
             for (index, value) in vector.iter().enumerate() {
-                acc[index] += value * (movie.rating - 5.0) / 5.0
+                acc[index] += value * coeff;
             }
 
             acc
         });
+
+    if sum == 0.0 {
+        return vec![];
+    }
+
+    for value in user_vector.iter_mut() {
+        *value /= sum;
+    }
 
     let results = index.search(&user_vector, k);
 
