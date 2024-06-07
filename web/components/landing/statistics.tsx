@@ -10,16 +10,16 @@ export const Statistics = () => {
         description: "Monthly users",
       },
       {
+        quantity: "3",
+        description: "Unique users",
+      },
+      {
         quantity: "10k+",
         description: "Movies",
       },
       {
         quantity: "260k+",
         description: "User ratings",
-      },
-      {
-        quantity: "4.7",
-        description: "TrustPilot",
       },
     ];
   

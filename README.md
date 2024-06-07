@@ -72,7 +72,7 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 
 ### Start the development server
 
-This will start the development server at `http://localhost:3000` and the API server at `http://localhost:4000`.
+This will start the development server at `http://localhost:3000` and the API server at `http://localhost:5432`.
 
 ```bash
 pnpm dev

@@ -1,21 +1,20 @@
+use hora::core::ann_index::ANNIndex;
 use hora::index::hnsw_idx::HNSWIndex;
 use sqlx::PgPool;
 
 use crate::configuration::Settings;
-use crate::predictions::{build_index, predict};
 use crate::proto::movie_service_server::MovieService as MovieTrait;
 use crate::proto::{
-    GetMovieRequest, GetMovieResponse, GetMoviesRequest, GetMoviesResponse, SearchMovieRequest,
-    SearchMovieResponse, Cast
+    Cast, GetMovieRequest, GetMovieResponse, GetPopularMoviesRequest, GetPopularMoviesResponse,
+    GetRecommandedMoviesRequest, GetRecommandedMoviesResponse, GetSimilarMoviesResponse,
+    SearchMovieRequest, SearchMovieResponse,
 };
-
-const MAX_CAST_SIZE: usize = 7;
+use crate::recommander::{build_index, predict};
 
 #[derive(serde::Deserialize)]
 struct Genre {
     name: String,
 }
-
 
 #[allow(dead_code)]
 #[derive(serde::Deserialize)]
@@ -110,15 +109,19 @@ impl MovieTrait for MovieService {
             .await
             .map_err(|_| tonic::Status::internal("Failed to parse movie credits"))?;
 
-        let casting = credits.cast.into_iter().take(MAX_CAST_SIZE).map(|cast| Cast {
-            id: cast.id,
-            name: cast.name,
-            role: cast.character,
-            profile_url: match cast.profile_path {
-                Some(text) => format!("https://image.tmdb.org/t/p/w500/{}", text),
-                None => "".to_string(),
-            },
-        }).collect();
+        let casting = credits
+            .cast
+            .into_iter()
+            .map(|cast| Cast {
+                id: cast.id,
+                name: cast.name,
+                role: cast.character,
+                profile_url: match cast.profile_path {
+                    Some(text) => format!("https://image.tmdb.org/t/p/w500/{}", text),
+                    None => "".to_string(),
+                },
+            })
+            .collect();
 
         let user_rating = sqlx::query!(
             r#"
@@ -156,70 +159,26 @@ impl MovieTrait for MovieService {
         }))
     }
 
-    async fn get_movies(
+    async fn get_popular_movies(
         &self,
-        request: tonic::Request<GetMoviesRequest>,
-    ) -> Result<tonic::Response<GetMoviesResponse>, tonic::Status> {
-        let user_id = extract_user_id(&request);
-
+        request: tonic::Request<GetPopularMoviesRequest>,
+    ) -> Result<tonic::Response<GetPopularMoviesResponse>, tonic::Status> {
         let body = request.into_inner();
-
-        let has_user_rated_movies = sqlx::query!(
-            r#"
-            SELECT EXISTS (
-                SELECT 1 FROM ratings
-                WHERE user_id = $1
-            ) as "exists!"
-            "#,
-            user_id
-        )
-        .fetch_one(&self.connection)
-        .await
-        .map_err(|_| tonic::Status::internal("Failed to check if user has rated movies"))?
-        .exists;
-
-        if has_user_rated_movies == true {
-            let recommended_movies = predict(&self.index, &self.connection, user_id, 10).await;
-            let mut movies = sqlx::query!(
-                r#"
-                SELECT * FROM movies
-                WHERE id = ANY($1)
-                "#,
-                recommended_movies.as_slice()
-            )
-            .fetch_all(&self.connection)
-            .await
-            .map_err(|_| tonic::Status::internal("Failed to fetch movies"))?;
-
-            // sort movies by the order of the recommended_movies
-            movies.sort_by_key(|movie| recommended_movies.iter().position(|id| *id == movie.id));
-
-            let poster_base_url = "https://image.tmdb.org/t/p/w500/";
-
-            let movies: Vec<crate::proto::MoviePreview> = movies
-                .into_iter()
-                .map(|movie| crate::proto::MoviePreview {
-                    id: movie.id,
-                    title: movie.title,
-                    poster_url: movie
-                        .poster_path
-                        .map(|text| format!("{}{}", poster_base_url, text)),
-                    vote_average: movie.vote_average,
-                })
-                .collect();
-
-            return Ok(tonic::Response::new(GetMoviesResponse { movies }));
-        };
 
         let movies = sqlx::query!(
             r#"
-                SELECT * FROM movies
-                ORDER BY popularity DESC
+                SELECT DISTINCT movies.*
+                FROM movies
+                JOIN movie_genres ON movies.id = movie_genres.movie_id
+                JOIN genres ON movie_genres.genre_id = genres.id
+                WHERE $3 = '*' OR genres.name = $3
+                ORDER BY movies.popularity DESC
                 LIMIT $1
                 OFFSET $2
-                "#,
+            "#,
             body.limit as i64,
-            body.offset as i64
+            body.offset as i64,
+            body.genre.as_str(),
         )
         .fetch_all(&self.connection)
         .await
@@ -239,7 +198,55 @@ impl MovieTrait for MovieService {
             })
             .collect();
 
-        Ok(tonic::Response::new(GetMoviesResponse { movies }))
+        Ok(tonic::Response::new(GetPopularMoviesResponse { movies }))
+    }
+
+    async fn get_recommanded_movies(
+        &self,
+        request: tonic::Request<GetRecommandedMoviesRequest>,
+    ) -> Result<tonic::Response<GetRecommandedMoviesResponse>, tonic::Status> {
+        let user_id = extract_user_id(&request);
+
+        let body = request.into_inner();
+
+        let recommended_movies = predict(
+            &self.index,
+            &self.connection,
+            user_id,
+            body.limit.try_into().unwrap(),
+        )
+        .await;
+        let mut movies = sqlx::query!(
+            r#"
+                SELECT * FROM movies
+                WHERE id = ANY($1)
+                "#,
+            recommended_movies.as_slice()
+        )
+        .fetch_all(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch movies"))?;
+
+        // sort movies by the order of the recommended_movies
+        movies.sort_by_key(|movie| recommended_movies.iter().position(|id| *id == movie.id));
+
+        let poster_base_url = "https://image.tmdb.org/t/p/w500/";
+
+        let movies: Vec<crate::proto::MoviePreview> = movies
+            .into_iter()
+            .map(|movie| crate::proto::MoviePreview {
+                id: movie.id,
+                title: movie.title,
+                poster_url: movie
+                    .poster_path
+                    .map(|text| format!("{}{}", poster_base_url, text)),
+                vote_average: movie.vote_average,
+            })
+            .collect();
+
+        return Ok(tonic::Response::new(GetRecommandedMoviesResponse {
+            movies,
+        }));
     }
 
     async fn search_movie(
@@ -281,14 +288,7 @@ impl MovieTrait for MovieService {
         &self,
         request: tonic::Request<crate::proto::VoteMovieRequest>,
     ) -> Result<tonic::Response<crate::proto::VoteMovieResponse>, tonic::Status> {
-        let user_id = request
-            .metadata()
-            .get("user_id")
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .parse::<i32>()
-            .unwrap();
+        let user_id = extract_user_id(&request);
 
         let body = request.into_inner();
 
@@ -313,6 +313,62 @@ impl MovieTrait for MovieService {
         })?;
 
         Ok(tonic::Response::new(crate::proto::VoteMovieResponse {}))
+    }
+
+    async fn get_similar_movies(
+        &self,
+        request: tonic::Request<crate::proto::GetSimilarMoviesRequest>,
+    ) -> Result<tonic::Response<crate::proto::GetSimilarMoviesResponse>, tonic::Status> {
+        let body = request.into_inner();
+
+        let movie_embedding = sqlx::query!(
+            r#"
+            SELECT embedding FROM movies
+            WHERE id = $1
+            "#,
+            body.movie_id
+        )
+        .fetch_one(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch movie vector"))?
+        .embedding;
+
+        let movie_vector: Vec<f32> =
+            serde_json::from_str(&movie_embedding.clone().unwrap()).unwrap();
+
+        let similar_movies = self
+            .index
+            .search(&movie_vector, body.limit.try_into().unwrap());
+
+        let mut movies = sqlx::query!(
+            r#"
+                    SELECT * FROM movies
+                    WHERE id = ANY($1)
+                    "#,
+            similar_movies.as_slice()
+        )
+        .fetch_all(&self.connection)
+        .await
+        .map_err(|_| tonic::Status::internal("Failed to fetch movies"))?;
+
+        // sort movies by the order of the recommended_movies
+        movies.sort_by_key(|movie| similar_movies.iter().position(|id| *id == movie.id));
+
+        let poster_base_url = "https://image.tmdb.org/t/p/w500/";
+
+        let movies: Vec<crate::proto::MoviePreview> = movies
+            .into_iter()
+            .map(|movie| crate::proto::MoviePreview {
+                id: movie.id,
+                title: movie.title,
+                poster_url: movie
+                    .poster_path
+                    .map(|text| format!("{}{}", poster_base_url, text)),
+                vote_average: movie.vote_average,
+            })
+            .collect();
+
+        return Ok(tonic::Response::new(GetSimilarMoviesResponse { movies }));
     }
 }
 

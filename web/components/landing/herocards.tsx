@@ -49,7 +49,7 @@ export function HeroCards({ loggedIn }: { loggedIn: boolean }) {
 
         <CardContent className="text-center pb-2">
           <p>
-            You can now enjoy infinite recommendations in the movie browser!
+            You can now endlessly scroll in the movie browser!
           </p>
         </CardContent>
 

@@ -1,29 +1,30 @@
 use api::proto::{
     movie_service_client::MovieServiceClient, user_service_client::UserServiceClient,
-    GetMoviesRequest, SearchMovieRequest, SignUpRequest,
+    GetPopularMoviesRequest, SearchMovieRequest, SignUpRequest,
 };
 use tonic::{metadata::MetadataValue, Request};
 
 use crate::helpers::spawn_app;
 
 #[tokio::test]
-async fn get_movies_returns_movies() {
+async fn get_popular_movies_returns_movies() {
     let app = spawn_app().await;
 
     let mut client = MovieServiceClient::connect(app.address.clone())
         .await
         .unwrap();
 
-    let mut request = Request::new(GetMoviesRequest {
+    let mut request = Request::new(GetPopularMoviesRequest {
         limit: 10,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
 
     request.metadata_mut().insert("authorization", token);
 
-    let res = client.get_movies(request).await.unwrap();
+    let res = client.get_popular_movies(request).await.unwrap();
 
     assert_eq!(res.into_inner().movies.len(), 10);
 }
@@ -60,9 +61,10 @@ async fn get_movie_returns_movie() {
         .await
         .unwrap();
 
-    let mut request = Request::new(GetMoviesRequest {
+    let mut request = Request::new(GetPopularMoviesRequest {
         limit: 1,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
@@ -71,7 +73,7 @@ async fn get_movie_returns_movie() {
         .metadata_mut()
         .insert("authorization", token.clone());
 
-    let res = client.get_movies(request).await.unwrap();
+    let res = client.get_popular_movies(request).await.unwrap();
 
     let movie = &res.into_inner().movies[0];
 
@@ -94,9 +96,10 @@ async fn vote_movie_works() {
         .await
         .unwrap();
 
-    let mut request = Request::new(GetMoviesRequest {
+    let mut request = Request::new(GetPopularMoviesRequest {
         limit: 1,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
@@ -105,7 +108,7 @@ async fn vote_movie_works() {
         .metadata_mut()
         .insert("authorization", token.clone());
 
-    let res = client.get_movies(request).await.unwrap();
+    let res = client.get_popular_movies(request).await.unwrap();
 
     let movie = &res.into_inner().movies[0];
 

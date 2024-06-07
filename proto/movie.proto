@@ -5,8 +5,10 @@ package movie;
 service MovieService {
   rpc GetMovie(GetMovieRequest) returns (GetMovieResponse);
   rpc SearchMovie(SearchMovieRequest) returns (SearchMovieResponse);
-  rpc GetMovies(GetMoviesRequest) returns (GetMoviesResponse);
+  rpc GetPopularMovies(GetPopularMoviesRequest) returns (GetPopularMoviesResponse);
+  rpc GetRecommandedMovies(GetRecommandedMoviesRequest) returns (GetRecommandedMoviesResponse);
   rpc VoteMovie(VoteMovieRequest) returns (VoteMovieResponse);
+  rpc GetSimilarMovies(GetSimilarMoviesRequest) returns (GetSimilarMoviesResponse);
 }
 
 message Cast {
@@ -55,12 +57,21 @@ message SearchMovieResponse {
   repeated MoviePreview movies = 1;
 }
 
-message GetMoviesRequest {
+message GetPopularMoviesRequest {
   int32 offset = 1;
   int32 limit = 2;
+  string genre = 3;
 }
 
-message GetMoviesResponse {
+message GetPopularMoviesResponse {
+  repeated MoviePreview movies = 1;
+}
+
+message GetRecommandedMoviesRequest {
+  int32 limit = 1;
+}
+
+message GetRecommandedMoviesResponse {
   repeated MoviePreview movies = 1;
 }
 
@@ -70,3 +81,12 @@ message VoteMovieRequest {
 }
 
 message VoteMovieResponse {}
+
+message GetSimilarMoviesRequest {
+  int32 movie_id = 1;
+  int32 limit = 2;
+}
+
+message GetSimilarMoviesResponse {
+  repeated MoviePreview movies = 1;
+}
