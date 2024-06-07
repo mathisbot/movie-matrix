@@ -111,19 +111,6 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                   </div>
               </div>
           </div>
-<<<<<<< HEAD
-          <div id="details" className="relative z-20 transition-opacity duration-300">
-              <div className="flex rounded-xl flex-row p-5 justify-between items-center align-middle">
-                  {movie.posterUrl && (
-                      <Image
-                          src={movie.posterUrl}
-                          alt={movie.title}
-                          className="mb-4 rounded-xl"
-                          width="350"
-                          height="525"
-                      />
-                  )}
-=======
           <div id="details" className="relative z-20 bg-gray-100">
               <div className="flex rounded-xl flex-row p-5 justify-between align-middle">
                   <div>
@@ -137,7 +124,6 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                           />
                       )}
                   </div>
->>>>>>> 39680c6c7fc1c89cb65c23638c45afca3db899c9
                   <div className="ml-2 p-4 h-full w-full">
                       <h2 className="mb-4 text-3xl">{movie.title}</h2>
                       <div className="mb-4">
@@ -187,18 +173,6 @@ export default function SingleMovie({ movie }: { movie: Movie }) {
                   </div>
               </div>
           </div>
-<<<<<<< HEAD
-          <div id="details" className="relative z-20">
-          <div className="relative mb-10">
-                              <h2 className="text-4xl text-black px-12 mt-8 mb-8">
-                                  <span className="relative z-10">
-                                      You may also like:
-                                  </span>
-                              </h2>
-                          </div>
-          </div>
-=======
->>>>>>> 39680c6c7fc1c89cb65c23638c45afca3db899c9
       </>
   );
 }
