@@ -36,7 +36,7 @@ const VoteSlider = ({
     <div className="flex flex-col justify-start">
       {userVote !== undefined && (
         <p className="text-gray-400 mx-3">
-          Your vote: {adjectiveMap[value - 1]}
+          Your vote: {adjectiveMap[userVote - 1]}
         </p>
       )}
       <div className="my-3 flex flex-row items-center content-center">
