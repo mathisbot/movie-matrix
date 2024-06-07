@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export function MoviesGrid() {
     const queryClient = useQueryClient();
 
-    const { data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+    const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
         queryKey: ["movies"],
         queryFn: async ({ pageParam = 0 }) => ({
             data: await fetchMovies({ pageParam, genre: genreSearch }),
@@ -27,7 +27,7 @@ export function MoviesGrid() {
         if (
             window.scrollY + window.innerHeight >=
             document.body.scrollHeight - window.innerHeight / 2 &&
-            !isFetchingNextPage
+            !isFetchingNextPage && hasNextPage
         ) {
             fetchNextPage();
         }
@@ -38,7 +38,7 @@ export function MoviesGrid() {
         return () => {
         window.removeEventListener("scroll", onScroll);
         };
-    }, [fetchNextPage, isFetchingNextPage]);
+    }, [fetchNextPage, isFetchingNextPage, hasNextPage]);
 
     const [genreSearch, setGenreSearch] = useState<string>("*");
 
