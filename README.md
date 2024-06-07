@@ -28,9 +28,9 @@ Here, you can take advantage of the infinite scroll function to select a film fr
 
 #### Film info
 
-By clicking on a movie's card, you can view information about it, such as its rating, cast and synopsis.
+By clicking on a movie's card, you can view information about it, such as its rating, cast and synopsis, but also recommendations of similar movies.
 
-WIP
+![Movie Browser](./.github/images/movie_viewer.webp)
 
 ### Built with
 
@@ -55,6 +55,8 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 -   [pnpm](https://pnpm.io/) (v9.1.4)
 -   [Docker](https://www.docker.com/)
 -   [protobuf](https://protobuf.dev/) (v27.0)
+-   [sqlx-cli](https://docs.rs/crate/sqlx-cli/0.5.7) (v0.5.7)
+-   [Libtorch](https://pytorch.org/cppdocs/installing.html) (v2.1.0)
 
 ### Install dependencies
 
@@ -72,7 +74,13 @@ export APP_THE_MOVIE_DB__API_KEY=your_tmdb_api_key
 
 ### Start the development server
 
-This will start the development server at `http://localhost:3000` and the API server at `http://localhost:5432`.
+First initialize the database. It will start a docker container based on postgres' Docker image on `http://localhost:5432`.
+
+```bash
+bash ./scripts/init_db.sh`
+```
+
+This will start the development server at `http://localhost:3000` and the API server at `http://localhost:4000`.
 
 ```bash
 pnpm dev
@@ -80,8 +88,16 @@ pnpm dev
 
 ### Build for production
 
+First build and start the Rust api:
+
 ```bash
-pnpm build
+cd ./api && cargo build -r && ./target/release/api
+```
+
+Then build the Next.js server and run it:
+
+```bash
+cd ./web && pnpm build && pnpm start
 ```
 
 [contributors-shield]: https://img.shields.io/github/contributors/mathisbot/movie-matrix.svg?style=for-the-badge
