@@ -17,6 +17,7 @@ async fn get_popular_movies_returns_movies() {
     let mut request = Request::new(GetPopularMoviesRequest {
         limit: 10,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
@@ -63,6 +64,7 @@ async fn get_movie_returns_movie() {
     let mut request = Request::new(GetPopularMoviesRequest {
         limit: 1,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
@@ -97,6 +99,7 @@ async fn vote_movie_works() {
     let mut request = Request::new(GetPopularMoviesRequest {
         limit: 1,
         offset: 0,
+        genre: "Action".to_string(),
     });
 
     let token: MetadataValue<_> = get_valid_token(app.address.clone()).await.into();
