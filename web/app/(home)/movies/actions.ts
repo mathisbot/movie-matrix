@@ -1,10 +1,17 @@
 "use server";
 
 import { getAuthMetadata, movieServiceClient } from "@/lib/grpc";
+import { revalidatePath } from "next/cache";
 
 const limitPerFetch = 50;
 
-export async function fetchMovies({ pageParam = 0, genre = "*" } : { pageParam?: number, genre?: string }) {
+export async function fetchMovies({
+  pageParam = 0,
+  genre = "*",
+}: {
+  pageParam?: number;
+  genre?: string;
+}) {
   const offset = pageParam * limitPerFetch;
   const limit = limitPerFetch;
 
@@ -25,9 +32,16 @@ export const fetchSearchedMovies = async (query: string) => {
 
 export const voteMovie = async (movieId: number, vote: number) => {
   const request = { movieId, vote };
-  return await movieServiceClient.voteMovie(request, getAuthMetadata());
+  const result = await movieServiceClient.voteMovie(request, getAuthMetadata());
+
+  revalidatePath("/movies");
+
+  return result;
 };
 
 export async function fetchRecommendedMovies(limit: number) {
-  return await movieServiceClient.getRecommandedMovies({ limit }, getAuthMetadata());
+  return await movieServiceClient.getRecommandedMovies(
+    { limit },
+    getAuthMetadata()
+  );
 }
