@@ -37,21 +37,10 @@ export const Navbar = async ({
     },
   ];
   const loggedIn = user !== null;
-  const username = user?.username || "";
 
   let authList: RouteProps[] = [];
 
-  if (loggedIn) {
-    authList.push({
-      href: "/profile",
-      label:
-        username.length > 20 ? `${username.substring(0, 15)}...` : username,
-    });
-    authList.push({
-      href: "/logout",
-      label: "Log Out",
-    });
-  } else {
+  if (!loggedIn) {
     authList.push({
       href: "/signup",
       label: "Sign Up",
@@ -124,6 +113,18 @@ export const Navbar = async ({
               {/* </Button> */}
             </Link>
           ))}
+
+          {loggedIn && (
+            <>
+              <span>{user.username}</span>
+              <Button
+                variant="ghost"
+                onClick={() => location.assign("/logout")}
+              >
+                Logout
+              </Button>
+            </>
+          )}
 
           <div className="space-y-4 md:space-y-0 md:space-x-4">
             <Link
